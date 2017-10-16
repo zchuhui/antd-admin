@@ -19,6 +19,11 @@ export default {
       "changeOrigin": true,
       "pathRewrite": { "^/api/v1/weather": "/v3/weather" }
     },
+    "/api/bg": {
+      "target": "https://bia.banggood.com/index.php/",
+      "changeOrigin": true,
+      "pathRewrite": { "^/api/bg": "/bg" }
+    },
     // "/api/v2": {
     //   "target": "http://192.168.0.110",
     //   "changeOrigin": true,

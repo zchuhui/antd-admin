@@ -1,10 +1,11 @@
 const APIV1 = '/api/v1'
 const APIV2 = '/api/v2'
+const APIBG = '/api/bg'
 
 module.exports = {
-  name: 'AntD Admin',
-  prefix: 'antdAdmin',
-  footerText: 'Ant Design Admin  © 2017 zuiidea',
+  name: '情报源系统',
+  prefix: '情报源',
+  footerText: 'Copyright 2017 RongCloud京公网安备 11010502027139京ICP备15042119号-1',
   logo: '/logo.png',
   iconFontCSS: '/iconfont.css',
   iconFontJS: '/iconfont.js',
@@ -13,7 +14,7 @@ module.exports = {
   apiPrefix: '/api/v1',
   APIV1,
   APIV2,
-  api: {
+  api: { 
     userLogin: `${APIV1}/user/login`,
     userLogout: `${APIV1}/user/logout`,
     userInfo: `${APIV1}/userInfo`,
@@ -26,4 +27,6 @@ module.exports = {
     v1test: `${APIV1}/test`,
     v2test: `${APIV2}/test`,
   },
+  apibg:APIBG,               // bg
+  storageSaveTime: 60 * 24,  //分钟为单位
 }

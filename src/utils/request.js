@@ -97,8 +97,8 @@ export default function request (options) {
     }
     return Promise.resolve({
       success: true,
-      message: statusText,
-      statusCode: status,
+      /* message: statusText,
+      statusCode: status, */
       ...data,
     })
   }).catch((error) => {

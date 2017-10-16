@@ -9,7 +9,7 @@ const FormItem = Form.Item
 
 const Login = ({
   loading,
-  dispatch,
+  dispatch, 
   form: {
     getFieldDecorator,
     validateFieldsAndScroll,
@@ -53,10 +53,10 @@ const Login = ({
           <Button type="primary" size="large" onClick={handleOk} loading={loading.effects.login}>
             Sign in
           </Button>
-          <p>
+          {/* <p>
             <span>Username：guest</span>
             <span>Password：guest</span>
-          </p>
+          </p> */}
         </Row>
 
       </form>

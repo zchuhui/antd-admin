@@ -154,6 +154,12 @@ let database = [
     name: 'Test Navigation22',
     route: '/navigation/navigation2/navigation2',
   },
+  {
+    id: '1',
+    icon: 'laptop',
+    name: '首页',
+    route: '/index',
+  },
 ]
 
 module.exports = {

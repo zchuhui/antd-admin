@@ -60,7 +60,7 @@ const App = ({ children, dispatch, app, loading, location }) => {
     menu,
     location,
     siderFold,
-    darkTheme,
+    darkTheme, 
     navOpenKeys,
     changeTheme () {
       dispatch({ type: 'app/switchTheme' })
@@ -100,7 +100,9 @@ const App = ({ children, dispatch, app, loading, location }) => {
           <Bread {...breadProps} />
           <div className={styles.container}>
             <div className={styles.content}>
-              {hasPermission ? children : <Error />}
+              {children}
+              {/* 权限控制 */}
+              {/* hasPermission ? children : <Error /> */}
             </div>
           </div>
           <Footer />
