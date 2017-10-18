@@ -17,12 +17,24 @@ export async function menuData (params) {
   const data = [
     
     {"id":"1001","icon":"laptop","name":"首页","route":"/home"},
+    {"id":"1002","icon":"shopping-cart","name":"商品","route":"/goods"},
+    {"id":"10021","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance"},
+    {"id":"10022","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance/:id"},
+
+    {"id":"1003","icon":"search","name":"竞品","route":"/rival"},
+    {"id":"10031","bpid":"1003","mpid":"1003","name":"竞品新品","icon":"heart-o","route":"/rival/new"},
+    {"id":"10032","bpid":"1003","mpid":"1003","name":"竞品热销","icon":"heart-o","route":"/rival/hot"},
+    {"id":"10033","bpid":"1003","mpid":"1003","name":"竞品热论","icon":"heart-o","route":"/rival/talk"},
+    {"id":"10034","bpid":"1003","mpid":"1003","name":"竞品推荐","icon":"heart-o","route":"/rival/recommend"},
+    {"id":"1004","icon":"bars","name":"分类","route":"/class"},
+    {"id":"1005","icon":"area-chart","name":"品牌","route":"/brand"},
     
     {"id":"1","icon":"laptop","name":"Dashboard","route":"/dashboard"},
     {"id":"2","bpid":"1","name":"Users","icon":"user","route":"/user"},
-    {"id":"7","bpid":"1","name":"Posts","icon":"shopping-cart","route":"/post"},
     {"id":"21","mpid":"-1","bpid":"2","name":"User Detail","route":"/user/:id"},
+    {"id":"7","bpid":"1","name":"Posts","icon":"shopping-cart","route":"/post"},
     {"id":"3","bpid":"1","name":"Request","icon":"api","route":"/request"},
+
     {"id":"4","bpid":"1","name":"UI Element","icon":"camera-o"},
     {"id":"41","bpid":"4","mpid":"4","name":"IconFont","icon":"heart-o","route":"/UIElement/iconfont"},
     {"id":"42","bpid":"4","mpid":"4","name":"DataTable","icon":"database","route":"/UIElement/dataTable"},
@@ -38,7 +50,7 @@ export async function menuData (params) {
     {"id":"61","bpid":"6","mpid":"6","name":"Test Navigation1","route":"/navigation/navigation1"},
     {"id":"62","bpid":"6","mpid":"6","name":"Test Navigation2","route":"/navigation/navigation2"},
     {"id":"621","bpid":"62","mpid":"62","name":"Test Navigation21","route":"/navigation/navigation2/navigation1"},
-    {"id":"622","bpid":"62","mpid":"62","name":"Test Navigation22","route":"/navigation/navigation2/navigation2"},
+    {"id":"622","bpid":"62","mpid":"62","name":"Test Navigation22","route":"/navigation/navigation2/navigation2"}, 
 
   
   ];

@@ -2,7 +2,6 @@ import { parse } from 'qs'
 import modelExtend from 'dva-model-extend'
 import { query, queryCate } from 'services/home'
 import { model } from 'models/common'
-import * as weatherService from 'services/weather'
 
 export default modelExtend(model, {
   namespace: 'home',

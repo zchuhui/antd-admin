@@ -21,7 +21,7 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/user')],
       component: () => import('./routes/user/'),
     }, {
-      path: '/user/:id',
+      path: '/user/:id', 
       models: () => [import('./models/user/detail')],
       component: () => import('./routes/user/detail/'),
     }, {
@@ -67,6 +67,21 @@ const Routers = function ({ history, app }) {
       path: '/home',
       models: () => [import('./models/home')],
       component: () => import('./routes/home/'),
+    },
+    {
+      path: '/goods',
+      models: () => [import('./models/goods')],
+      component: () => import('./routes/goods/'),
+    },
+    {
+      path: '/goods/relevance', 
+      models: () => [import('./models/goods/relevance')],
+      component: () => import('./routes/goods/relevance/'),
+    },
+    {
+      path: '/goods/relevance/:sku', 
+      models: () => [import('./models/goods/relevance')],
+      component: () => import('./routes/goods/relevance/'),
     },
   ]
 

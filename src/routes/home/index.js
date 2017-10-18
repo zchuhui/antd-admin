@@ -68,37 +68,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Home);
-
-
-
-
-/* import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'dva'
-import { Button, Row, Form, Input } from 'antd'
-import { config } from 'utils'
-import styles from './index.less'
-
-
-const Home = ({
-  loading,
-  dispatch, 
-  form: {
-    getFieldDecorator,
-    validateFieldsAndScroll,
-  },
-}) => {
-  return (
-    <div>
-      首页...................
-    </div>
-  )
-}
-
-Home.propTypes = {
-  dispatch: PropTypes.func,
-  loading: PropTypes.object,
-}
-
-
-export default connect(({ loading }) => ({ loading }))(Form.create()(Home)) */

@@ -39,6 +39,7 @@
     "babel-plugin-import": "^1.1.1",
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-runtime": "^6.9.2",
+    "clipboard": "^1.7.1",
     "copy-webpack-plugin": "^4.0.1",
     "draftjs-to-html": "^0.7.0",
     "dva-model-extend": "^0.1.1",
@@ -53,9 +54,11 @@
     "redbox-react": "^1.2.10",
     "roadhog": "^1.2.2"
   },
-  "pre-commit": ["lint"],
+  "pre-commit": [
+    "lint"
+  ],
   "scripts": {
-    "start": "set PORT=3001&&roadhog server",    
+    "start": "set PORT=3001&&roadhog server",
     "dev": "cross-env BROWSER=none HOST=0.0.0.0 roadhog server",
     "lint": "eslint --fix --ext .js src",
     "build": "roadhog build",

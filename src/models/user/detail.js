@@ -13,6 +13,7 @@ export default {
     setup ({ dispatch, history }) {
       history.listen(({ pathname }) => {
         const match = pathToRegexp('/user/:id').exec(pathname)
+        debugger
         if (match) {
           dispatch({ type: 'query', payload: { id: match[1] } })
         }
