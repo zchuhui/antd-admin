@@ -16,8 +16,6 @@ const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
 let SKU = null;
-const match = pathToRegexp('/goods/relevance/:sku').exec(window.location.pathname);
-if(match) SKU = match[1];
 
 
 class Relevance extends React.Component {
@@ -428,12 +426,15 @@ class Relevance extends React.Component {
 
     }
 
+    
+
     /**
      * 跳转到步骤二
      */
     toStepTwo() {
-        
-        if (this.props.sku !== null) {
+        // 输入的sku
+        const inputSku = this.refs.inputSku.refs.input.value;
+        if (inputSku !== "" && inputSku == this.props.sku) {
             this.setState({
                 step1: 'none',
                 step2: '',
@@ -968,22 +969,22 @@ class Relevance extends React.Component {
     clearAllData(){
 
         this.props.dispatch({
-            type: 'CreateRelevanceModel/saveRelevanceGoods',
+            type: 'goods/saveRelevanceGoods',
             payload: {},
         });
 
         this.props.dispatch({
-            type: 'CreateRelevanceModel/saveSimilarGoodsList',
+            type: 'goods/saveSimilarGoodsList',
             payload: {},
         });
 
         this.props.dispatch({
-            type: 'CreateRelevanceModel/saveRelevanceGoodsList',
+            type: 'goods/saveRelevanceGoodsList',
             payload: {},
         });
 
         this.props.dispatch({
-            type: 'CreateRelevanceModel/saveRelevanceGoodsBySite',
+            type: 'goods/saveRelevanceGoodsBySite',
             payload: {},
         });
 
@@ -999,22 +1000,19 @@ class Relevance extends React.Component {
     }
 
 
-    /**
-     * 渲染前
-     */
+    // 渲染前
     componentWillMount(){
-        // 清空数据
-        this.clearAllData();
+        this.clearAllData();                           // 清空model数据
+        const clipboard  = new Clipboard('.copyUrl');  // 初始化点击复制组件
 
-        // 初始化点击复制组件
-        const clipboard  = new Clipboard('.copyUrl'); 
+        // 判断SKU是否存在，存在则直接进入第二步
+        const match = pathToRegexp("/goods/relevance/:sku").exec(window.location.pathname);
+        if (match) {
+          SKU = match[1];
+        } else {
+          SKU = null;
+        }
 
-    }
-
-    /**
-     * 渲染后
-     */
-    componentDidMount() {
         // 如果是点击列表的sku进来的，跳到步骤二
         if (SKU) {
             this.setState({
@@ -1027,13 +1025,10 @@ class Relevance extends React.Component {
             this.getGoodsBySku(SKU); 
         }
     }
-
-    componentDidUpdate(){
-        
-    }
-
-
+    componentDidMount() {}
+    componentDidUpdate() {}
 }
+
 
 function mapStateToProps(state) {
     return { ...state.relevance };

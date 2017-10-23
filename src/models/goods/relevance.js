@@ -36,11 +36,6 @@ export default {
 
 	reducers: {
 
-		/**
-		 * 存储相似的商品表
-		 * @param {*} state 
-		 * @param {*} param1 
-		 */
 		saveSimilarGoodsList(state, { payload: { data } }) {
 
 			// 处理数据
@@ -59,29 +54,14 @@ export default {
 			return { ...state, similarGoodsList: array };
 		},
 		
-		/**
-		 * 存储获取的单个商品(步骤一)
-		 * @param {*} state 
-		 * @param {*} param1 
-		 */
 		saveRelevanceGoods(state, { payload }) {
 			return { ...state, goods: {data:payload}, sku:payload.sku };
 		},
 		
-		/**
-		 * 保存获取的单个商品（步骤二）
-		 * @param {*} state 
-		 * @param {*} param1 
-		 */
 		saveRelevanceGoodsBySite(state, { payload }) {
 			return { ...state, goodsBySite: payload };
 		},
 		
-		/**
-		 * 存储已关联的商品（步骤二）
-		 * @param {*} state 
-		 * @param {*} param1 
-		 */
 		saveRelevanceGoodsList(state, { payload }) {
 
 			// 数据格式转换
@@ -120,30 +100,19 @@ export default {
 			return { ...state, relevanceGoodsList: formatData };
 		},
 		
-		/**
-		 * 切换创建关联模块的 loading 状态
-		 */
 		toggleCreateRelevanceLoading(state, { payload }) {
 			return { ...state, createRelevanceLoading: payload.loading };
 		},
 		
-		/**
-		 * 切换设置关联状态，成功与否
-		 * @param {*} state 
-		 * @param {*} param1 
-		 */
 		toggleSetRevanceStatus(state, { payload }) {
 			return { ...state, setRevanceStatus: payload.status };
 		}
-		
 	},
 
 	effects: {
 
 		/**
 		 * 根据 sku 搜索单个商品(步骤一)
-		 * @param {*} param0
-		 * @param {*} param1
 		 */
 		*getProductInfo({ payload }, { select, call, put }) {
 			// 显示加载状态
@@ -169,8 +138,6 @@ export default {
 
 		/**
 		 * 手动搜索单个相似商品（步骤二）
-		 * @param {*} param0 
-		 * @param {*} param1 
 		 */
 		*fetchGoodsBySkuAndSite({ payload }, { select, call, put }) {
 			// 显示加载状态
@@ -196,8 +163,6 @@ export default {
 
 		/**
 		 * 获取相似商品列表（步骤二）
-		 * @param {*} param0
-		 * @param {*} param1
 		 */
 		*getLikeProduct({ payload }, { select, call, put }) {
 			const { data } = yield call(getLikeProduct, payload);
@@ -206,8 +171,6 @@ export default {
 
 		/**
 		 * 获取已关联的商品 (步骤二)
-		 * @param {*} param0 
-		 * @param {*} param1 
 		 */
 		*featchRevanceGoods({ payload }, { select, call, put }) {
 			const { data } = yield call(fetchRevanceBySku, payload);
@@ -216,8 +179,6 @@ export default {
 
 		/**
 		 * 设置关联相似商品(步骤二)
-		 * @param {*} param0 
-		 * @param {*} param1 
 		 */
 		*setRelevanceGoods({ payload }, { call, put }) {
 
@@ -248,8 +209,6 @@ export default {
 
 		/**
 		 * 清除已关联商品 (步骤二)
-		 * @param {*} param0 
-		 * @param {*} param1 
 		 */
 		*clearRelevanceGoods({ payload }, { call, put }) {
 
