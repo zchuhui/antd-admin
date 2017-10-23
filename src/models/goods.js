@@ -1,6 +1,6 @@
 import { parse } from 'qs'
 import modelExtend from 'dva-model-extend'
-import { query, getCateList, getBrandList, getBgProductRunChart } from 'services/goods'
+import { query, getCateList, getBrandList, getBgProductRunChart, getBgProductContrast } from 'services/goods'
 import { model } from 'models/common'
 import Time from 'utils/time'
 
@@ -9,6 +9,7 @@ export default modelExtend(model, {
   state: {
     
   },
+  
   subscriptions: {
     setup ({ dispatch, history }) {
       history.listen(({ pathname }) => {
@@ -20,6 +21,7 @@ export default modelExtend(model, {
       })
     },
   },
+
   effects: {
     *query ({payload}, { call, put, select }) {
       yield put({type: 'updateState',payload: {'loading':true}})              // 加载状态
@@ -80,15 +82,33 @@ export default modelExtend(model, {
     },
 
     *getBgProductRunChart ({payload}, { call, put, select }) {
-      yield put({type: 'updateState',payload: {'goodsEchartDataLoading':false}});  // 加载状态
+      // 加载状态
+      yield put({type: 'updateState',payload: {'goodsEchartDataLoading':false}});  
+
+      // 请求数据
       const {data, code} = yield call(getBgProductRunChart, payload); 
       
+      // 格式化数据
       let formatData = formatEchartData(data,payload.startTime,payload.endTime);
+      
+      // 存储数据
       yield put({
         type: 'updateState',
         payload: {'goodsEchartData':{...formatData},'goodsEchartDataLoading':true},
       });
     },
+
+    *getBgProductContrast({ payload }, { select, call, put }) {
+
+      yield put({ type: 'updateState',  payload: {'goodContrastDataLoading':false} });
+      
+      const { data } = yield call(getBgProductContrast, payload.pid);
+      
+      yield put({ type: 'updateState', 
+        payload: {'goodContrastData':farmatContrastData(data),'goodContrastDataLoading':true} 
+      });
+    }
+
   },
 })
 
@@ -175,6 +195,59 @@ const formatEchartData=(echartData,time1,time2) =>{
 }
 
 /**
+ * 转换商品对比数据格式
+ */
+const farmatContrastData=(datas) => {
+  let data = datas,
+  info = datas.info,
+  relateInfo = datas.relateInfo,
+  relateInfoArray = [];
+
+  for (let item in relateInfo) {
+    relateInfoArray.push(relateInfo[item]);
+  }
+
+  // 格式转换：BG
+  if (info && info.sevenRunChart) {
+    for (let item in info.sevenRunChart) {
+        let array = [];
+        let sevenDays = [];
+        for (let item2 in info.sevenRunChart[item]) {
+            sevenDays.push(item2)
+            array.push(info.sevenRunChart[item][item2]);
+        }
+        info[item] = array;            // 数组：值
+        info['sevenDays'] = sevenDays; // 数组：日期
+    }
+  }
+
+  // 格式转换：关联
+  if (relateInfoArray.length > 0) {
+    relateInfoArray.map((m,index) => 
+    {
+        for (let item in m.sevenRunChart) {
+            let array = [];
+            let sevenDays = [];
+            for (let item2 in m.sevenRunChart[item]) {
+                sevenDays.push(item2)
+                array.push(m.sevenRunChart[item][item2]);
+            }
+            m[item] = array;            // 数组：值
+            m['sevenDays'] = sevenDays; // 数组：日期
+        }
+    })
+    
+  }
+
+
+  data.info = info;
+  data.relateInfo = relateInfoArray;
+
+  return data;
+
+}
+
+/**
 * 计算两个日期时间段内所有日期 
 * return 日期数组 
 */
@@ -235,3 +308,4 @@ const dataToLabel = (value) => {
 
   return label;
 }
+

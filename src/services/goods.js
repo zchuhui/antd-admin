@@ -52,6 +52,21 @@ export async function getBgProductRunChart (params) {
 }
 
 
+/**
+ * 获取对比商品数据
+ */
+export async function getBgProductContrast(pid) {
+    const params = {'com':'ajax','t':'getBgRelateProductComtrastInfo','pid':pid};
+    return request(apibg, {
+      method: 'get',
+      data: params,
+    });
+}
+
+
+
+
+/******************* 关联模块 ********************/
 
 /**
  * 获取单个商品信息

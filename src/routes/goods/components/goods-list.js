@@ -18,7 +18,7 @@ import DateTime from 'utils/time';
 const { Column, ColumnGroup } = Table;
 const { MonthPicker, RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
-const Option = Select.Option;
+const Option = Select.Option; 
 const RadioGroup = Radio.Group;
 
 
@@ -105,14 +105,13 @@ class GoodsList extends React.Component {
                             !record.isChildren?
                             <Dropdown overlay={this.tableColumnsMenu(record)}>
                                 <Button>
-                                  操作 <Icon type="down" />
+                                    操作 <Icon type="down" />
                                 </Button>
-                          </Dropdown>
-                          :
-                          <div style={{position:'absolute',top:'-1px',left:0,width:'100%',borderTop:'1px solid #fff'}}> 
-                          </div>
+                            </Dropdown>
+                            :
+                            <div style={{position:'absolute',top:'-1px',left:0,width:'100%',borderTop:'1px solid #fff'}}> 
+                            </div> 
                         }
-                       
                    </span>
                 ),
             },{
@@ -306,7 +305,7 @@ class GoodsList extends React.Component {
                     width={'70%'}
                     >
                     {
-                        //this.goodsContrastTable()
+                        this.goodsContrastTable()
                     }
                 </Modal>
                 {/* 商品对比弹框 end*/}
@@ -380,7 +379,7 @@ class GoodsList extends React.Component {
                     :
                     <div>
                         {
-                            this.props.goodContrastData.info?
+                            this.props.goodContrastData?
                             <Row>
                                 <Col span={4}>
                                     <ul className={styles.tableColTitle}>
@@ -492,7 +491,7 @@ class GoodsList extends React.Component {
         });
 
         // 请求数据
-        this.props.getGoodsContrastDataByPid(pid);
+        this.props.getBgProductContrast(pid);
 
 
         this.timeout(3000).then((value) => {

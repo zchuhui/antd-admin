@@ -28,7 +28,7 @@ class Goods extends React.Component {
             goodsEchartDataLoading={this.props.goodsEchartDataLoading} 
             getGoodsEcharData={args => this.getGoodsEcharData(args)} 
 
-            getGoodsContrastDataByPid={pid => this.getGoodsContrastDataByPid(pid)} 
+            getBgProductContrast={pid => this.getBgProductContrast(pid)} 
             clearGoodsContrastData={args => this.clearGoodsContrastData(args)}
             goodContrastData={this.props.goodContrastData}
             goodContrastDataLoading={this.props.goodContrastDataLoading} 
@@ -95,11 +95,10 @@ class Goods extends React.Component {
 
   /**
    * 根据商品的 pid 获取对比数据
-   * @param {int} pid 
    */
-  getGoodsContrastDataByPid(pid){
+  getBgProductContrast(pid){
       this.props.dispatch({
-          type:'RelevanceBGModel/fetchGoodsContrastDataByPid',
+          type:'goods/getBgProductContrast',
           payload:{
               pid:pid,
           }
