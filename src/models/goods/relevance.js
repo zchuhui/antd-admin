@@ -4,9 +4,13 @@
  * Author: zhuangchuhui
  */
 
-//import * as BgService from '../../../services/service-bg-goods';
-
-import { getProductInfo, getLikeProduct, fetchGoodsDetailBySku, fetchRevanceBySku, setRelevanceGoods, clearRelevanceGoods } from 'services/goods'
+import { 
+	getProductInfo, 
+	getLikeProduct, 
+	fetchGoodsDetailBySku, 
+	fetchRevanceBySku, 
+	setRelevanceGoods, 
+	clearRelevanceGoods } from 'services/goods'
 import { message } from 'antd';
 
 const CODE200 = 200

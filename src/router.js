@@ -83,6 +83,11 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/goods/relevance')],
       component: () => import('./routes/goods/relevance/'),
     },
+    {
+      path: '/goods/detail/:sku', 
+      models: () => [import('./models/goods/detail')],
+      component: () => import('./routes/goods/detail/'),
+    },
   ]
 
   return (

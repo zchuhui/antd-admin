@@ -20,6 +20,7 @@ export async function menuData (params) {
     {"id":"1002","icon":"shopping-cart","name":"商品","route":"/goods"},
     {"id":"10021","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance"},
     {"id":"10022","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance/:id"},
+    {"id":"10031","mpid":"-1","bpid":"1002","name":"详情","route":"/goods/detail/:id"},
 
     {"id":"1003","icon":"search","name":"竞品","route":"/rival"},
     {"id":"10031","bpid":"1003","mpid":"1003","name":"竞品新品","icon":"heart-o","route":"/rival/new"},

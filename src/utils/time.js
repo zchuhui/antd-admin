@@ -1,6 +1,5 @@
 
 import moment from 'moment';
-
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 export default {

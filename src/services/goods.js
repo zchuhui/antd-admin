@@ -134,3 +134,46 @@ export async function clearRelevanceGoods(params) {
       data: params,
   }); 
 }
+
+
+
+/******************* 详情模块 ********************/
+
+/**
+ * 根据SKU获取商品
+ * @param {string} sku 
+ */
+export async function getGoodsBySku(sku) {
+    const params = {'com':'products','sku':sku};
+    return request(apibg, {
+          method: 'get',
+          data: params,
+    });
+}
+
+
+/**
+ * 根据SKU获取商品价格汇总信息
+ * @param {string} sku 
+ */
+export async function getPriceListBySku(sku) {
+    const params = {'com':'products','t':'priceSet','sku':sku};
+    return request(apibg, {
+          method: 'get',
+          data: params,
+    });
+}
+
+
+/**
+ * 获取单个商品某段时间内价格趋势图和对比关系
+ * @param {object} params 
+ */
+export async function getGoodsByParams(params) {
+    Object.assign(params,{'com':'products','t':'productOtherRunChart'})
+    return request(apibg, {
+          method: 'get',
+          data: params,
+    });
+}
+
