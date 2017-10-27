@@ -86,7 +86,22 @@ const Routers = function ({ history, app }) {
     {
       path: '/goods/detail/:sku', 
       models: () => [import('./models/goods/detail')],
-      component: () => import('./routes/goods/detail/'),
+      component: () => import('./routes/goods/detail/'), 
+    },
+    {
+      path: '/rival/new',
+      models: () => [import('./models/rival')],
+      component: () => import('./routes/rival/new/'),
+    },
+    {
+      path: '/rival/view',
+      models: () => [import('./models/rival')],
+      component: () => import('./routes/rival/new/view'),
+    },
+    {
+      path: '/rival/view/:name',
+      models: () => [import('./models/rival')],
+      component: () => import('./routes/rival/new/view'),
     },
   ]
 

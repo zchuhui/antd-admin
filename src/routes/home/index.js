@@ -63,7 +63,6 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log('mapStateToProps',state.home);
 	return { ...state.home};
 }
 

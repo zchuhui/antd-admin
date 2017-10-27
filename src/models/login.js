@@ -22,12 +22,12 @@ export default {
         Storage.set('username', data.userInfo.admin_name, storageSaveTime);
         Storage.set('token', data.token, storageSaveTime);
         
-        //yield put({ type: 'app/query' })
+        yield put({ type: 'app/query' })
         
         if (from && from !== '/login') {
           yield put(routerRedux.push(from))             //跳转到指定地址
         } else {
-          yield put(routerRedux.push('/home'))     //跳转到首页
+          yield put(routerRedux.push('/home'))          //跳转到首页
         }  
       } else {
         throw data
