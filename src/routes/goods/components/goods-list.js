@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { hashHistory  } from 'react-router';
+import { hashHistory,browerHistory } from 'react-router';
 import { Link } from 'dva/router';
 import styles from './goods-list.less';
 import moment from 'moment';
@@ -379,7 +379,7 @@ class GoodsList extends React.Component {
                     :
                     <div>
                         {
-                            this.props.goodContrastData?
+                            this.props.goodContrastData && this.props.goodContrastData !== null?
                             <Row>
                                 <Col span={4}>
                                     <ul className={styles.tableColTitle}>
@@ -521,7 +521,7 @@ class GoodsList extends React.Component {
         }
 
         // 关联商品Echart图，目前最多只显示两个关联
-        if (this.props.goodContrastData.relateInfo) {
+        if (this.props.goodContrastData !==null && this.props.goodContrastData.relateInfo) {
             this.props.goodContrastData.relateInfo.map((item,index) => {
                 
                 if (index == 0) {

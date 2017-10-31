@@ -4,6 +4,8 @@ import { query, getCateList, getBrandList, getBgProductRunChart, getBgProductCon
 import { model } from 'models/common'
 import Time from 'utils/time'
 
+const CODE200 = 200
+
 export default modelExtend(model, {
   namespace: 'goods',
   state: {
@@ -102,11 +104,20 @@ export default modelExtend(model, {
 
       yield put({ type: 'updateState',  payload: {'goodContrastDataLoading':false} });
       
-      const { data } = yield call(getBgProductContrast, payload.pid);
+      const { data,code } = yield call(getBgProductContrast, payload.pid);
       
-      yield put({ type: 'updateState', 
-        payload: {'goodContrastData':farmatContrastData(data),'goodContrastDataLoading':true} 
+      if(code == CODE200){
+        yield put({ type: 'updateState', 
+          payload: {'goodContrastData':farmatContrastData(data),'goodContrastDataLoading':true} 
+        });
+      }else{
+        yield put({ type: 'updateState', 
+        payload: {'goodContrastData':null,'goodContrastDataLoading':true} 
       });
+       
+      }
+      
+
     }
 
   },

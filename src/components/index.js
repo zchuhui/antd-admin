@@ -7,6 +7,8 @@ import FilterItem from './FilterItem'
 import Loader from './Loader'
 import * as Layout from './Layout/index.js'
 import Page from './Page'
+import Opinion from './Opinion'
+
 
 import layer from './layer'
 
@@ -21,4 +23,5 @@ export {
   Loader,
   layer,
   Page,
+  Opinion
 }

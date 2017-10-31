@@ -4,8 +4,8 @@ import styles from './index.less'
 
 const Error = () => (<div className="content-inner">
   <div className={styles.error}>
-    <Icon type="frown-o" />
-    <h1>404 Not Found</h1>
+    <Icon type="rocket" />
+    <h3>拼命开发中...</h3>
   </div>
 </div>)
 

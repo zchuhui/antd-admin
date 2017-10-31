@@ -4,7 +4,7 @@ import NProgress from 'nprogress'
 import PropTypes from 'prop-types'
 import pathToRegexp from 'path-to-regexp'
 import { connect } from 'dva'
-import { Layout, Loader } from 'components'
+import { Layout, Loader,Opinion} from 'components'
 import { classnames, config } from 'utils'
 import { Helmet } from 'react-helmet'
 import { withRouter } from 'dva/router'
@@ -18,7 +18,7 @@ const { Header, Bread, Footer, Sider, styles } = Layout
 let lastHref
 
 const App = ({ children, dispatch, app, loading, location }) => {
-  const { user, siderFold, darkTheme, isNavbar, menuPopoverVisible, navOpenKeys, menu, permissions } = app
+  const { user, siderFold, darkTheme, isNavbar, opinionVisible,menuPopoverVisible, navOpenKeys, menu, permissions } = app
   let { pathname } = location
   pathname = pathname.startsWith('/') ? pathname : `/${pathname}`
   const { iconFontJS, iconFontCSS, logo } = config
@@ -40,6 +40,7 @@ const App = ({ children, dispatch, app, loading, location }) => {
     location,
     siderFold,
     isNavbar,
+    opinionVisible,
     menuPopoverVisible,
     navOpenKeys,
     switchMenuPopover () {
@@ -47,6 +48,9 @@ const App = ({ children, dispatch, app, loading, location }) => {
     },
     logout () {
       dispatch({ type: 'app/logout' })
+    },
+    switchOpinion () {
+      dispatch({ type: 'app/switchOpinion' })
     },
     switchSider () {
       dispatch({ type: 'app/switchSider' })
@@ -104,6 +108,9 @@ const App = ({ children, dispatch, app, loading, location }) => {
               {/* 权限控制 */}
               {/* hasPermission ? children : <Error /> */}
             </div>
+            {
+              opinionVisible? <Opinion />:null
+            }
           </div>
           <Footer />
         </div>

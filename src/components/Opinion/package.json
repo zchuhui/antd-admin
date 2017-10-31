@@ -1,0 +1,6 @@
+{
+  "name": "Opinion",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Opinion.js"
+}

@@ -5,12 +5,14 @@ import { routerRedux } from "dva/router";
 import { parse } from "qs";
 import config from "config";
 import { EnumRoleType } from "enums";
-import { query, login, logout } from "services/app";
+import { query, login, logout,opinion } from "services/app";
 import * as menusService from "services/menus";
 import queryString from "query-string";
 import Storage from 'utils/storage'
+import { message } from 'antd'
 
-const { prefix } = config;
+const { prefix,CODE200 } = config;
+
 
 export default {
   namespace: "app",
@@ -21,12 +23,13 @@ export default {
     },
     menu: [
       {
-        id: 1001,
+        id: 1003,
         icon: "laptop",
-        name: "首页",
-        router: "/home"
+        name: "竞品",
+        router: "/rival/new"
       }
     ],
+    opinionVisible:false,
     menuPopoverVisible: false,
     siderFold: window.localStorage.getItem(`${prefix}siderFold`) === "true",
     darkTheme: window.localStorage.getItem(`${prefix}darkTheme`) === "true",
@@ -65,9 +68,9 @@ export default {
       
       const { locationPathname } = yield select(_ => _.app);
       const username = Storage.get('username');
-      console.log(username);
+
       //const { success, user } = yield call(query, payload);
-      
+      //debugger
       if(username){
         const menu  = yield call(menusService.menuData);    // 获取菜单
         const user = {'username': username}                 // 获取用户信息
@@ -83,7 +86,8 @@ export default {
         if (location.pathname === "/login") {
           yield put(
             routerRedux.push({
-              pathname: "/home"
+              //pathname: "/home"
+              pathname: "/rival/new"
             })
           );
         }
@@ -174,6 +178,17 @@ export default {
       if (isNavbar !== app.isNavbar) {
         yield put({ type: "handleNavbar", payload: isNavbar });
       }
+    },
+
+    *opinionMsg({payload},{ call, put}){
+      yield put({ type: "updateState", payload: {'opinionLoading':true}});
+      const {data, code, msg } = yield call(opinion, payload);
+      if(code == CODE200){
+        message.success(msg);
+        yield put({ type: "updateState", payload: {'opinionLoading':false,'opinionVisible':false}});
+      }else{
+        yield put({ type: "updateState", payload: {'opinionLoading':false}});
+      }
     }
   },
   reducers: {
@@ -204,6 +219,13 @@ export default {
       return {
         ...state,
         menuPopoverVisible: !state.menuPopoverVisible
+      };
+    },
+    switchOpinion(state) {
+      return {
+        ...state,
+        opinionVisible: !state.opinionVisible,
+        opinionLoading:false,
       };
     },
 

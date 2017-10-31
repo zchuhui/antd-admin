@@ -37,7 +37,7 @@ class NewView extends React.Component {
 
             bgSku:null,                             // 关联的bgSku
 
-            relatedStatus:false,
+            relatedStatus:true,
             stockStatus:false,
         }
     }
@@ -293,9 +293,10 @@ class NewView extends React.Component {
     }
 
     componentDidUpdate(){
+        
         // 关联成功，刷新列表
-        if(this.props.relatedStatus == 1 && !this.state.relatedStatus){
-            this.state.relatedStatus = this.props.relatedStatus;
+        if(this.props.relatedStatus == 1 && this.state.relatedStatus){
+            this.state.relatedStatus = false;
 
             this.timeout(2000).then((value) => {
                 this.getRivalDataByParams({
@@ -543,6 +544,8 @@ class NewView extends React.Component {
                 sku:sku,
                 bgsku:this.state.bgSku
             });
+
+            this.state.relatedStatus = true;
         }
     }
 

@@ -14,7 +14,6 @@ export default {
     }, { put, call, select }) {
       const {code,data} = yield call(login, payload)
       const { locationQuery } = yield select(_ => _.app)
-      
       if (code == 200) {
         const { from } = locationQuery
 
@@ -27,7 +26,8 @@ export default {
         if (from && from !== '/login') {
           yield put(routerRedux.push(from))             //跳转到指定地址
         } else {
-          yield put(routerRedux.push('/home'))          //跳转到首页
+          //yield put(routerRedux.push('/home'))          //跳转到首页
+          yield put(routerRedux.push('/rival/new'))         
         }  
       } else {
         throw data

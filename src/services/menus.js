@@ -22,12 +22,12 @@ export async function menuData (params) {
     {"id":"10022","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance/:id"},
     {"id":"10031","mpid":"-1","bpid":"1002","name":"详情","route":"/goods/detail/:id"},
 
-    {"id":"1003","icon":"search","name":"竞品","route":"/rival"},
-    {"id":"10031","bpid":"1003","mpid":"1003","name":"竞品新品","icon":"heart-o","route":"/rival/new"},
+    {"id":"1003","icon":"search","name":"竞品","route":"/rival/new"},
+    {"id":"10031","bpid":"1003","mpid":"1003","name":"竞品新品","icon":"compass","route":"/rival/new"},
     {"id":"100311","bpid":"1003","mpid":"-1","name":"新品列表","route":"/rival/view"},
     {"id":"10032","bpid":"1003","mpid":"1003","name":"竞品热销","icon":"heart-o","route":"/rival/hot"},
-    {"id":"10033","bpid":"1003","mpid":"1003","name":"竞品热论","icon":"heart-o","route":"/rival/talk"},
-    {"id":"10034","bpid":"1003","mpid":"1003","name":"竞品推荐","icon":"heart-o","route":"/rival/recommend"},
+    {"id":"10033","bpid":"1003","mpid":"1003","name":"竞品热论","icon":"team","route":"/rival/talk"},
+    {"id":"10034","bpid":"1003","mpid":"1003","name":"竞品推荐","icon":"like-o","route":"/rival/recommend"},
     {"id":"1004","icon":"bars","name":"分类","route":"/class"},
     {"id":"1005","icon":"area-chart","name":"品牌","route":"/brand"},
     

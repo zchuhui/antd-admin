@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { routerRedux } from "dva/router";
 import { message } from 'antd'
 import { stringify } from 'qs'
 import Storage from './storage';
@@ -34,6 +35,7 @@ const fetch = (url, options) => {
 }
 
 function checkStatus (res) {
+  //console.log(res)
   if (res.status >= 200 && res.status < 300) {
     return res
   }
@@ -48,6 +50,12 @@ function handelData (res) {
   if (data && data.msg && parseInt(data.code) !== 200) {
     message.destroy();
     message.error(data.msg)
+
+    if(data.code == 401){
+      Storage.remove('username');
+      window.location.href = '/login'
+      
+    }
   }
   else if(data && data.msg && data.code == 200) {
 	  //message.success(data.msg)

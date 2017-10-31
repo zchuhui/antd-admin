@@ -6,11 +6,12 @@
 
 import React from 'react';
 import { connect } from 'dva';
+import {  hashHistory  } from 'react-router';
+import { Link, routerRedux } from 'dva/router';
 import styles from './index.less'
 import moment from 'moment';
 import echarts from 'echarts';
 import { Button, DatePicker, Spin,} from 'antd';
-import { Link, hashHistory} from 'dva/router';
 import DateTime from 'utils/time'; 
 
 const { MonthPicker, RangePicker } = DatePicker;
@@ -20,7 +21,7 @@ class Index extends React.Component {
     constructor(props, context) {
         super(props, context);
         
-        this.state = {
+        this.state = { 
             startDate: DateTime.getDateOfDays(7),
             endDate: DateTime.getDateOfDays(1),
         }
@@ -71,14 +72,6 @@ class Index extends React.Component {
 
         return (
             <div className={`${styles.mainWrap} ${styles.rivalWrap}`}>
-                {/* <div className={styles.menu}>
-                    <ul>
-                        <li className={styles.current}>竞品新品</li>
-                        <li><UndevelopedAlert text="竞品热销"/></li>
-                        <li><UndevelopedAlert text="竞品热论"/></li>
-                        <li><UndevelopedAlert text="竞品推荐"/></li>
-                    </ul>
-                </div> */}
                 <div className={styles.content}>
                     <div>
                         <RangePicker 
@@ -103,7 +96,6 @@ class Index extends React.Component {
                         <span className={styles.lateDate} onClick={this.onLatelyDate.bind(this,30)}>最近30天</span>
                         
                     </div>
-                    
                     {
                         this.props.loading?
                         <div style={{textAlign:'center',marginTop:150}}><Spin /></div>
@@ -199,6 +191,7 @@ class Index extends React.Component {
                                 :
                                 <div style={{textAlign:'center',marginTop:150}}>数据载入失败</div>
                             }
+                            <div className={styles.more}>没有你关注的竞争对手? &nbsp; <Button type="primary" size='small' onClick={this.switchOpinion}>点击提需求</Button></div>
                         </div>
                     }
                 </div>
@@ -218,7 +211,7 @@ class Index extends React.Component {
         })
 
     }
- 
+
  
     componentDidUpdate(){
         // 载入Echart图表
@@ -249,13 +242,11 @@ class Index extends React.Component {
     }
 
 
-
-
     /**
      * 载入折线图表
      * @param {object} chartData 
      */
-    loadChart(chartData,id,siteName) {
+    loadChart=(chartData,id,siteName)=>{
 
         const chartBG = echarts.init(id);
 
@@ -364,10 +355,14 @@ class Index extends React.Component {
                 }
             }
 
+            //this.props.dispatch(routerRedux.push(path)); 
             hashHistory.push(path);
+
         });
 
     }
+
+    
 
     /**
      * 载入饼状图
@@ -509,14 +504,16 @@ class Index extends React.Component {
     disabledDate(current) {
         return current && current.valueOf() > Date.now();
     }
-
-
     
-
+    switchOpinion=()=>{
+        this.props.dispatch({
+            type: 'app/switchOpinion',
+        })
+    }
 }
-
+ 
 function mapStateToProps(state){
-    return {...state.rival};
+    return {...state.rival,...state.app};
 }
 
 export default connect(mapStateToProps)(Index)

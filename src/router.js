@@ -12,7 +12,7 @@ const Routers = function ({ history, app }) {
     component: () => import('./routes/error'),
   })
   const routes = [
-    {
+    /* {
       path: '/dashboard',
       models: () => [import('./models/dashboard')],
       component: () => import('./routes/dashboard/'),
@@ -62,7 +62,12 @@ const Routers = function ({ history, app }) {
       path: '/post',
       models: () => [import('./models/post')],
       component: () => import('./routes/post/'),
-    },
+    }, */
+    {
+      path: '/login',
+      models: () => [import('./models/login')],
+      component: () => import('./routes/login/'),
+    }, 
     {
       path: '/home',
       models: () => [import('./models/home')],

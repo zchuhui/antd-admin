@@ -24,3 +24,11 @@ export async function logout (params) {
       data: params,
     });
 }
+
+export async function opinion (params) {
+      Object.assign(params,{'com':'opinion','t':'addOpinion'});
+      return request(apibg, {
+        method: 'post',
+        data: params,
+      });
+  }

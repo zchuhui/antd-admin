@@ -1,14 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Menu, Icon, Popover } from 'antd'
+import { Menu, Icon, Popover, Modal, Button, Input, Dropdown,Tooltip  } from 'antd'
 import classnames from 'classnames'
 import styles from './Header.less'
 import Menus from './Menu'
 
 const SubMenu = Menu.SubMenu
+const { TextArea } = Input
 
-const Header = ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, navOpenKeys, changeOpenKeys, menu }) => {
-  let handleClickMenu = e => e.key === 'logout' && logout()
+const Header = ({ user, logout,opinionMsg, switchSider, siderFold, isNavbar, opinionVisible,
+    menuPopoverVisible, location, switchMenuPopover,switchOpinion, navOpenKeys, changeOpenKeys, menu }) => {
+  let handleClickMenu = e => e.key === 'logout' && logout() 
+
   const menusProps = {
     menu,
     siderFold: false,
@@ -19,6 +22,7 @@ const Header = ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVis
     navOpenKeys,
     changeOpenKeys,
   }
+
   return (
     <div className={styles.header}>
       {isNavbar
@@ -34,9 +38,25 @@ const Header = ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVis
           <Icon type={classnames({ 'menu-unfold': siderFold, 'menu-fold': !siderFold })} />
         </div>}
       <div className={styles.rightWarpper}>
-        <div className={styles.button}>
-          <Icon type="mail" />
-        </div>
+        <Menu mode="horizontal" onClick={handleClickMenu}>
+            <SubMenu
+              style={{
+                float: 'right',
+              }}
+              title={<span>banggood <Icon type="down" /></span>}
+            >
+              <Menu.Item key="1" disabled>
+                Yoins
+              </Menu.Item>
+              <Menu.Item key="2" disabled>
+                Newchic
+              </Menu.Item>
+            </SubMenu>
+          </Menu>
+        <Tooltip title="意见反馈">    
+          <div className={styles.button} onClick={switchOpinion}><Icon type="edit"/></div>
+        </Tooltip>
+
         <Menu mode="horizontal" onClick={handleClickMenu}>
           <SubMenu
             style={{
@@ -53,9 +73,11 @@ const Header = ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVis
           </SubMenu>
         </Menu>
       </div>
+      
     </div>
   )
 }
+  
 
 Header.propTypes = {
   menu: PropTypes.array,

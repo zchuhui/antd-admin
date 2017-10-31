@@ -20,7 +20,7 @@ export default {
       "pathRewrite": { "^/api/v1/weather": "/v3/weather" }
     },
     "/api/bg": {
-      "target": "https://bia.banggood.com/index.php/",
+      "target": "https://betabia.banggood.com/index.php/",
       "changeOrigin": true,
       "pathRewrite": { "^/api/bg": "/bg" }
     },
