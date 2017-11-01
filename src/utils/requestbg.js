@@ -7,7 +7,8 @@ import Storage from './storage';
 
 // message 全局配置
 message.config({
-  top: 50,
+  top: "45%",
+  duration: 2,
 }) 
 
 //axios.defaults.baseURL = newband.app.admin.API_HOST
