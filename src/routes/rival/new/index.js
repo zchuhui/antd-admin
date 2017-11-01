@@ -354,7 +354,7 @@ class Index extends React.Component {
                     endDate: params.name
                 }
             }
-
+            
             //this.props.dispatch(routerRedux.push(path)); 
             hashHistory.push(path);
 
