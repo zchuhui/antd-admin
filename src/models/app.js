@@ -13,7 +13,6 @@ import { message } from 'antd'
 
 const { prefix,CODE200 } = config;
 
-
 export default {
   namespace: "app",
   state: {
@@ -23,9 +22,9 @@ export default {
     },
     menu: [
       {
-        id: 1003,
+        id: 1,
         icon: "laptop",
-        name: "竞品",
+        name: "竞品新品",
         router: "/rival/new"
       }
     ],
@@ -40,19 +39,7 @@ export default {
     locationQuery: {}
   },
   subscriptions: {
-    /* setupHistory({ dispatch, history }) {
-      history.listen(location => {
-        dispatch({
-          type: "updateState",
-          payload: {
-            locationPathname: location.pathname,
-            locationQuery: queryString.parse(location.search)
-          }
-        });
-      });
-    }, */
-
-    setup({ dispatch }) {
+    setup({ dispatch }) { 
       dispatch({ type: "query" });
       let tid;
       window.onresize = () => {
@@ -65,12 +52,9 @@ export default {
   },
   effects: {
     *query({ payload }, { call, put, select }) {
-      
       const { locationPathname } = yield select(_ => _.app);
       const username = Storage.get('username');
 
-      //const { success, user } = yield call(query, payload);
-      //debugger
       if(username){
         const menu  = yield call(menusService.menuData);    // 获取菜单
         const user = {'username': username}                 // 获取用户信息
@@ -159,6 +143,14 @@ export default {
           })
         );
       } */
+
+      if(location.pathname == '/home' || location.pathname == '/' ){
+        yield put(
+            routerRedux.push({
+              pathname: "/rival/new"
+            })
+          );
+      }
     },
 
     *logout({ payload }, { call, put }) {

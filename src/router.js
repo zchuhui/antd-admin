@@ -68,7 +68,7 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/login')],
       component: () => import('./routes/login/'),
     }, 
-    {
+    /* {
       path: '/home',
       models: () => [import('./models/home')],
       component: () => import('./routes/home/'),
@@ -87,7 +87,7 @@ const Routers = function ({ history, app }) {
       path: '/goods/relevance/:sku', 
       models: () => [import('./models/goods/relevance')],
       component: () => import('./routes/goods/relevance/'),
-    },
+    }, */
     {
       path: '/goods/detail/:sku', 
       models: () => [import('./models/goods/detail')],

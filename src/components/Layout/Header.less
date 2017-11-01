@@ -21,14 +21,33 @@
     padding-right: 16px;
   }
 
+  .menuDown{
+    width:125px;
+  }
+
   .button {
     width: 47px;
     height: 47px;
     line-height: 47px;
     text-align: center;
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
     transition: @transition-ease-in;
+
+    &:hover {
+      color: @primary-color;
+      background-color: fade(@primary-color, 15%);
+    }
+  }
+  .opinion{
+    width: 80px;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: @transition-ease-in;
+    margin-right: -3px;
 
     &:hover {
       color: @primary-color;

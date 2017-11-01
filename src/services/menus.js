@@ -20,16 +20,23 @@ export async function menuData (params) {
     {"id":"1002","icon":"shopping-cart","name":"商品","route":"/goods"},
     {"id":"10021","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance"},
     {"id":"10022","mpid":"-1","bpid":"1002","name":"创建关系","route":"/goods/relevance/:id"},
-    {"id":"10031","mpid":"-1","bpid":"1002","name":"详情","route":"/goods/detail/:id"}, */
+    {"id":"10031","mpid":"-1","bpid":"1002","name":"详情","route":"/goods/detail/:id"}, */ 
 
-    {"id":"1003","icon":"search","name":"竞品","route":"/rival/new"},
+    /* {"id":"1003","icon":"search","name":"竞品","route":"/rival/new"},
     {"id":"10031","bpid":"1003","mpid":"1003","name":"竞品新品","icon":"compass","route":"/rival/new"},
     {"id":"100311","bpid":"1003","mpid":"-1","name":"新品列表","route":"/rival/view"},
     {"id":"10032","bpid":"1003","mpid":"1003","name":"竞品热销","icon":"heart-o","route":"/rival/hot"},
     {"id":"10033","bpid":"1003","mpid":"1003","name":"竞品热论","icon":"team","route":"/rival/talk"},
     {"id":"10034","bpid":"1003","mpid":"1003","name":"竞品推荐","icon":"like-o","route":"/rival/recommend"},
     {"id":"1004","icon":"bars","name":"分类","route":"/class"},
-    {"id":"1005","icon":"area-chart","name":"品牌","route":"/brand"},
+    {"id":"1005","icon":"area-chart","name":"品牌","route":"/brand"}, */
+
+    {"id":"1","name":"竞品新品","icon":"compass","route":"/rival/new"},
+    {"id":"101","mpid":"-1","bpid":"1","name":"竞品列表","route":"/rival/view"},
+    {"id":"2","name":"竞品热销","icon":"heart-o","route":"/rival/hot"},
+    {"id":"3","name":"竞品热论","icon":"team","route":"/rival/talk"},
+    {"id":"4","name":"竞品追踪","icon":"like-o","route":"/rival/recommend"},
+    
     
     /* {"id":"1","icon":"laptop","name":"Dashboard","route":"/dashboard"},
     {"id":"2","bpid":"1","name":"Users","icon":"user","route":"/user"},

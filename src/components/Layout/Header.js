@@ -23,59 +23,46 @@ const Header = ({ user, logout,opinionMsg, switchSider, siderFold, isNavbar, opi
     changeOpenKeys,
   }
 
-  return (
-    <div className={styles.header}>
-      {isNavbar
-        ? <Popover placement="bottomLeft" onVisibleChange={switchMenuPopover} visible={menuPopoverVisible} overlayClassName={styles.popovermenu} trigger="click" content={<Menus {...menusProps} />}>
+  return <div className={styles.header}>
+      {isNavbar ? <Popover placement="bottomLeft" onVisibleChange={switchMenuPopover} visible={menuPopoverVisible} overlayClassName={styles.popovermenu} trigger="click" content={<Menus {...menusProps} />}>
           <div className={styles.button}>
             <Icon type="bars" />
           </div>
-        </Popover>
-        : <div
-          className={styles.button}
-          onClick={switchSider}
-        >
-          <Icon type={classnames({ 'menu-unfold': siderFold, 'menu-fold': !siderFold })} />
+        </Popover> : <div className={styles.button} onClick={switchSider}>
+          <Icon type={classnames({
+              "menu-unfold": siderFold,
+              "menu-fold": !siderFold
+            })} />
         </div>}
-      <div className={styles.rightWarpper}>
-        <Menu mode="horizontal" onClick={handleClickMenu}>
-            <SubMenu
-              style={{
-                float: 'right',
-              }}
-              title={<span>banggood <Icon type="down" /></span>}
-            >
-              <Menu.Item key="1" disabled>
-                Yoins
-              </Menu.Item>
-              <Menu.Item key="2" disabled>
-                Newchic
-              </Menu.Item>
-            </SubMenu>
-          </Menu>
-        <Tooltip title="意见反馈">    
-          <div className={styles.button} onClick={switchOpinion}><Icon type="edit"/></div>
-        </Tooltip>
 
-        <Menu mode="horizontal" onClick={handleClickMenu}>
-          <SubMenu
-            style={{
-              float: 'right',
-            }}
-            title={<span>
-              <Icon type="user" />
-              {user.username}
-            </span>}
-          >
-            <Menu.Item key="logout">
-              Sign out
+      <div className={styles.rightWarpper}>
+        <div className={styles.opinion} onClick={switchOpinion}>
+          <Icon type="edit" />&nbsp; 意见反馈
+        </div>
+
+        <Menu className={styles.menuDown} mode="horizontal" onClick={handleClickMenu}>
+          <SubMenu style={{ float: "right", width: 120, padding: 0 }} title={<span>
+                <Icon type="bars" />banggood
+              </span>}>
+            <Menu.Item key="1" disabled>
+              Yoins（即将上线）
+            </Menu.Item>
+            <Menu.Item key="2" disabled>
+              Newchic（即将上线）
             </Menu.Item>
           </SubMenu>
         </Menu>
+
+        <Menu className={styles.menuDown} mode="horizontal" onClick={handleClickMenu}>
+          <SubMenu style={{ float: "right" }} title={<span>
+                <Icon type="user" />
+                {user.username}
+              </span>}>
+            <Menu.Item key="logout">Sign out</Menu.Item>
+          </SubMenu>
+        </Menu>
       </div>
-      
-    </div>
-  )
+    </div>;
 }
   
 

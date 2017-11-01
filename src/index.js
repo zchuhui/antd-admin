@@ -11,9 +11,9 @@ const app = dva({
   }),
   history: createHistory(),
   onError (error) {
-    //message.error(error.message)
-    message.destroy();
-    message.warning('服务器加载中，请重试')
+   /*  message.destroy();
+    message.error(error.message) */
+    //message.warning('服务器加载中，请重试')
   },
 })
 
