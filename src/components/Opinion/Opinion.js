@@ -7,6 +7,7 @@ import headImg from "./opinion.png";
 const { TextArea } = Input
 
 const placeholder =" 简单描述你的意见与需求 \n\n 例子：\n 我们组平时关注以下竞争对手，快帮我补上。 \n www.shein.com \n www.zaful.com";
+const contactPlaceholder = "留下球球（QQ~），方便联系";
 
 class Opinion extends React.Component {
   render() {
@@ -45,7 +46,11 @@ class Opinion extends React.Component {
         </div>
         <div style={{ margin: "20px auto" }}>
           <b className={styles.title}>联系方式：</b>
-          <Input placeholder="留下球球（QQ~），方便联系" id="contactText" />
+          <Input
+            id="contactText"
+            onFocus={this.inputFoucs}
+            onBlur={this.inputBlur}
+          />
         </div>
         <p>你也可以加我们的Q群, 直接跟我们说。 群号：681211866（情报源服务群）</p>
       </Modal>
@@ -67,9 +72,26 @@ class Opinion extends React.Component {
     }
   };
 
-  componentDidMount(){
+  inputFoucs = () => {
+    let value = document.getElementById("contactText").value;
+    if (contactPlaceholder === value) {
+      document.getElementById("contactText").value = "";
+      document.getElementById("contactText").style.color = "#666";
+    }
+  };
+
+  inputBlur = () => {
+    if (document.getElementById("contactText").value === "") {
+      document.getElementById("contactText").value = contactPlaceholder;
+      document.getElementById("contactText").style.color = "#bbb";
+    }
+  };
+
+  componentDidMount() {
     document.getElementById("contentText").value = placeholder;
-    document.getElementById("contentText").style.color = '#bbb';
+    document.getElementById("contentText").style.color = "#bbb";
+    document.getElementById("contactText").value = contactPlaceholder;
+    document.getElementById("contactText").style.color = "#bbb";
   }
 
   // 打开/关闭

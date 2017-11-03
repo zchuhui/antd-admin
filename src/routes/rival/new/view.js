@@ -130,7 +130,7 @@ class NewView extends React.Component {
             { title: '操作', width:'10%',render:(text,record) => (
                 <div>
                     {
-                        record.purInfo == null || record.purInfo.length == 0?
+                        /* record.purInfo == null || record.purInfo.length == 0?
                         <Popover 
                             title="确认发起该产品的采购申请吗？" 
                             trigger="click" 
@@ -149,10 +149,9 @@ class NewView extends React.Component {
                                 <p>{ record.purInfo.adopt_status}</p>
                                 <p>{ record.purInfo.purchase_status}</p>
                             </div>
-                        </Popover>
+                        </Popover> */
                     }
-                   {/*  <Button type="primary"><UndevelopedAlert text="采购"/></Button> */}
-                    
+                    <Button disabled>采购</Button>
                 </div>
             )},
         ];

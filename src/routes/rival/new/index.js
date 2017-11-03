@@ -24,6 +24,7 @@ class Index extends React.Component {
         this.state = { 
             startDate: DateTime.getDateOfDays(7),
             endDate: DateTime.getDateOfDays(1),
+            pathsItems:{},
         }
     }
     
@@ -50,7 +51,7 @@ class Index extends React.Component {
                 }
             },
             dx:{
-                pathname:`rival/view`,
+                pathname:`/rival/view`,
                 state:{
                     site:'dx',
                     cid:null,
@@ -59,7 +60,7 @@ class Index extends React.Component {
                 }
             },
             tomtop:{
-                pathname:`rival/view`,
+                pathname:`/rival/view`,
                 state:{
                     site:'tomtop',
                     cid:null,
@@ -68,7 +69,6 @@ class Index extends React.Component {
                 }
             },
         }
-
 
         return (
             <div className={`${styles.mainWrap} ${styles.rivalWrap}`}>
@@ -118,6 +118,7 @@ class Index extends React.Component {
                                             (BG上新 <span className={styles.colorOrange}>{this.props.rivalData.bg_product_count}件</span>商品)
                                             
                                             <Link to={paths.gearbest}><Button type='primary' className={styles.fr}>查看商品</Button></Link>
+                                            
                                         </div>
                                         <div>
                                             <div ref="greabestChartId" style={{display:'inline-block', width:'60%',height:250}}>data</div>
@@ -187,11 +188,14 @@ class Index extends React.Component {
                                             <div ref="tomtopPieChartId" style={{display:'inline-block', width:'40%',height:250}}></div>
                                         </div>
                                     </section>
+
+                                    <Link to={this.state.pathsItems} ref="toLinkId" id='toLinkId'></Link>
                                 </div>
                                 :
                                 <div style={{textAlign:'center',marginTop:150}}>数据载入失败</div>
                             }
-                            <div className={styles.more}>没有你关注的竞争对手? &nbsp; <Button type="primary" size='small' onClick={this.switchOpinion}>点击提需求</Button></div>
+                            <div className={styles.more}>没有你关注的竞争对手? &nbsp; 
+                            <Button type="primary" size='small' onClick={this.switchOpinion}>点击提需求</Button></div>
                         </div>
                     }
                 </div>
@@ -223,7 +227,7 @@ class Index extends React.Component {
                         this.loadPieChart(item.category_present,this.refs.greabestPieChartId,item.site);
                         break;
                     case 'lightinthebox':
-                        this.loadChart(item.new_list,this.refs.ltjsChartId,item.site);
+                        this.loadChart(item.new_list,this.refs.ltjsChartId,item.site,);
                         this.loadPieChart(item.category_present,this.refs.ltjsPieChartId,item.site);
                         break;
                     case 'dx':
@@ -247,7 +251,7 @@ class Index extends React.Component {
      * @param {object} chartData 
      */
     loadChart=(chartData,id,siteName)=>{
-
+        
         const chartBG = echarts.init(id);
 
         const option = {
@@ -343,10 +347,12 @@ class Index extends React.Component {
         chartBG.setOption(option);
 
 
+        let _this = this;
+
         // 添加点击事件，跳转链接
         chartBG.on("click", function(params){ 
             const path = {
-                pathname:`/view`,
+                pathname:`/rival/view`,
                 state:{
                     site:siteName,
                     cid:null,
@@ -355,8 +361,13 @@ class Index extends React.Component {
                 }
             }
             
-            //this.props.dispatch(routerRedux.push(path)); 
-            hashHistory.push(path);
+            _this.setState({
+                'pathsItems':path
+            });
+            
+            if(document.getElementById("toLinkId")){
+                document.getElementById("toLinkId").click(); 
+            }
 
         });
 
@@ -368,7 +379,7 @@ class Index extends React.Component {
      * 载入饼状图
      * @param {object} chartData 
      */
-    loadPieChart(chartData,id,siteName){
+    loadPieChart=(chartData,id,siteName)=>{
         
         const chartId = echarts.init(id);
         let data = [];
@@ -414,10 +425,12 @@ class Index extends React.Component {
         const startDate = this.state.startDate;
         const endDate = this.state.endDate;
 
+        let _this = this;
+
         // 添加点击事件，跳转链接
         chartId.on("click", function(params){ 
             const path = {
-                pathname:`/view`,
+                pathname:`/rival/view`,
                 state:{
                     site:siteName,                  // 站点名称
                     cid:params.data.cid,            // 分类名称
@@ -426,7 +439,12 @@ class Index extends React.Component {
                 }
             }
             
-            hashHistory.push(path);
+             _this.setState({ pathsItems: path });
+
+             if (document.getElementById("toLinkId")) {
+               document.getElementById("toLinkId").click();
+             }
+            //hashHistory.push(path);
 
         });
     }
