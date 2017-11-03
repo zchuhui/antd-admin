@@ -108,6 +108,21 @@ const Routers = function ({ history, app }) {
       models: () => [import('./models/rival')],
       component: () => import('./routes/rival/new/view'),
     },
+    {
+      path: '/rival/hot',
+      models: () => [import('./models/rival/hot/sort')],
+      component: () => import('./routes/rival/hot/sort/'),
+    },
+    {
+      path: '/rival/hot/price',
+      models: () => [import('./models/rival/hot/price')],
+      component: () => import('./routes/rival/hot/price/'),
+    },
+    {
+      path: '/rival/hot/rank',
+      models: () => [import('./models/rival/hot/rank')],
+      component: () => import('./routes/rival/hot/rank/'),
+    },
   ]
 
   return (

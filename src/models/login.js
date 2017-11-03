@@ -34,5 +34,10 @@ export default {
       }
     },
   },
-
+/* 
+  subscriptions: {
+    setup({ dispatch }) { 
+      console.log('login');
+    }
+  } */
 }

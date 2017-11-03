@@ -1,24 +1,7 @@
 const APIV1 = '/api/v1'
 const APIV2 = '/api/v2'
 
-let APIBG = '/api/bg'
-
-if (document.domain === 'betabia.banggood.com') {
-	// 测试
-	APIBG = 'https://betabia.banggood.com/index.php';
-}
-else if(document.domain === 'localhost'){
-	// 本地
-	APIBG = '/api/bg';
-}
-else if(document.domain === 'localbia.banggood.com'){
-	// 测试
-	APIBG = 'http://localbia.banggood.com/index.php';
-}
-else{
-	// 正式环境
-	APIBG = 'https://bia.banggood.com/index.php';
-}
+const APIBG = apiCheck();
 
 module.exports = {
   name: '情报源',
@@ -48,4 +31,43 @@ module.exports = {
   apibg:APIBG,               // bg
   storageSaveTime: 60 * 24,  //分钟为单位
   CODE200:200,
+  httpsCheck:httpsCheck(),
+}
+
+
+// 接口识别
+function apiCheck(){
+  let APIBG;
+
+  if (document.domain === 'betabia.banggood.com') {
+    // 测试
+    APIBG = 'https://betabia.banggood.com/index.php';
+  }
+  else if (document.domain === 'localhost') {
+    // 本地
+    APIBG = '/api/bg';
+  }
+  else if (document.domain === 'localbia.banggood.com') {
+    // 测试
+    APIBG = 'http://localbia.banggood.com/index.php';
+  }
+  else {
+    // 正式环境
+    APIBG = 'https://bia.banggood.com/index.php';
+  }
+
+  return APIBG; 
+}
+
+// https识别
+function httpsCheck(){
+  // 开发环境除外
+  if (document.domain !== 'localhost') {
+    var isHttps = 'https:' == document.location.protocol ? true : false;
+    if (!isHttps) {
+        // 获取Url地址，并转向https
+        let url = window.location.href.split('://')[1];
+        location.href = `https://${url}`;
+    }
+  }
 }

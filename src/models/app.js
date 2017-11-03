@@ -40,6 +40,7 @@ export default {
   },
   subscriptions: {
     setup({ dispatch }) { 
+
       dispatch({ type: "query" });
       let tid;
       window.onresize = () => {

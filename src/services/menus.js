@@ -34,6 +34,10 @@ export async function menuData (params) {
     {"id":"1","name":"竞品新品","icon":"compass","route":"/rival/new"},
     {"id":"101","mpid":"-1","bpid":"1","name":"竞品列表","route":"/rival/view"},
     {"id":"2","name":"竞品热销","icon":"heart-o","route":"/rival/hot"},
+    { "id": "21", "bpid": "2", "mpid": "2", "name": "品类分布", "route": "/rival/hot" },
+    { "id": "22", "bpid": "2", "mpid": "2", "name": "价格分布", "route": "/rival/hot/price" },
+    { "id": "23", "bpid": "2", "mpid": "2", "name": "热销排行", "route": "/rival/hot/rank" },
+
     {"id":"3","name":"竞品热论","icon":"team","route":"/rival/talk"},
     {"id":"4","name":"竞品追踪","icon":"like-o","route":"/rival/recommend"},
     
