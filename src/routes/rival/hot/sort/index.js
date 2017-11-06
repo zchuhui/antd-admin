@@ -9,19 +9,20 @@ import { connect } from 'dva';
 import styles from './index.less'
 import moment from 'moment';
 import echarts from 'echarts';
-import { Button, DatePicker, Spin, Cascader, Input} from 'antd';
+import { Button, DatePicker, Spin, Cascader, Input,} from 'antd';
 import DateTime from 'utils/time';
 
-const { RangePicker } = DatePicker,
-    InputGroup = Input.Group;
+const InputGroup = Input.Group;
+
 
 class Index extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            startDate: DateTime.getDateOfDays(7),  
-            endDate: DateTime.getDateOfDays(1),  
+            site: null,    
+            cid: null,
+            date: DateTime.getDateOfDays(1),  
         }
     }
 
@@ -30,63 +31,77 @@ class Index extends React.Component {
             <div className={`${styles.content}`}>
                 <div>
                     <Cascader
+                        options={this.props.cate ? this.props.cate:null} 
                         placeholder="竞品平台-分类"
                         changeOnSelect
                         allowClear
                         style={{ marginRight: 10, width: 300}}
+                        onChange={this.onSelectSiteAndCid.bind(this)}
                     />
-                    <InputGroup compact style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
+                    <InputGroup compact style={{ width: 236, display: 'inline-block', verticalAlign: 'top' }}>
                         <Button style={{ verticalAlign: 'top' }}>检索时间</Button>
-                        <RangePicker
-                            value={[
-                                moment(this.state.startDate),
-                                moment(this.state.endDate)
-                            ]}
-                            ranges={{
-                                '今天': [moment(), moment()],
-                                '本周': [moment(), moment().endOf('week')],
-                                '本月': [moment(), moment().endOf('month')]
-                            }}
-                            format="YYYY-MM-DD"
-                            style={{ width: 210 }}
-                            allowClear={false}
+                        <DatePicker 
+                            defaultValue={moment(this.state.date)}
                             disabledDate={this.disabledDate}
-                            onChange={this.onGetDateRange.bind(this)}
-                        />
+                            onChange={this.onGetDateRange.bind(this)} />
                     </InputGroup>
-                    <Button type="primary">搜索</Button>
+                    <Button type="primary" onClick={this.onSearch}>搜索</Button>
                 </div>
                 <div className={styles.chartWrap}>
-                    <h2>二级类目名称</h2>
-                    <div ref="sortChartId" style={{width:'100%',height:600}}></div>
+                {
+                    this.props.loading ? <div className={styles.dataNull}><Spin /></div> : 
+                    this.props.data ?
+                        <div>
+                            <h2>{this.props.data.cateName}</h2>
+                            <div ref="sortChartId" style={{ width: '100%', height: this.props.data.nums.length * 30 }}></div>
+                            <div className={styles.chartName}>TOP100销售排序分类占比</div>
+                        </div> 
+                        : 
+                        <div className={styles.dataNull}>该类目的热销商品排行暂无数据</div>
+                }
                 </div>
-                <div className={styles.chartName}>TOP100销售分类占比</div>
 
                 <div className={styles.lineChartWrap}>
-                    <div ref="sortChartId2" style={{ width: '80%', height: 300, margin:'0 auto'}}></div>
-                    <div className={styles.chartName}>TOP100销售分类占比</div>
+                {
+                    this.props.cateLoading ? <div className={styles.dataNull}><Spin /></div> :
+                    this.props.cateData?
+                        <div>
+                            <div ref="sortChartId2" style={{ width: '80%', height: 300, margin: '0 auto' }}></div>
+                            <div className={styles.chartName}>{this.props.data ? this.props.data.cateName:null} 销量排序走势</div>
+                        </div>
+                        :
+                         <div className={styles.dataNull}>该类目销量排序走势暂无数据</div>
+                }
                 </div>
+                
             </div>
         )
     }
 
 
     componentDidMount() {
+        this.props.dispatch({
+            type:'sort/getHotProductsRateInCate',
+            payload:{
+                data:this.state.date,
+            }
+        })
 
-        let data =  {
-            label: ['价格区间1', '价格区间2', '价格区间3', '价格区间4', '价格区间5', '价格区间6', '价格区间4', '价格区间5', '价格区间6'],
-            value: [22, 33, 1000, 222, 32, 333,333,222,233,23,,333,223],
-        };
-        let data2 = {
-            label: ['2017-05-06', '2017-05-07', '2017-05-08', '2017-05-09', '2017-05-10', '2017-05-06'],
-            value: [22, 33, 100, 222, 32,44],
-        };
-
-        this.loadChartBar(data, this.refs.sortChartId);
-        this.loadChartLine(data2, this.refs.sortChartId2);
+        this.props.dispatch({
+            type: 'sort/getCateChartInHotProducts',
+            payload: {
+                data: this.state.date,
+            }
+        })
     }
 
     componentDidUpdate() {
+        if (this.props.data !== null && this.refs.sortChartId) {
+            this.loadChartBar(this.props.data, this.refs.sortChartId);
+        }
+        if (this.props.cateData !== null && this.refs.sortChartId2) {
+            this.loadChartLine(this.props.cateData, this.refs.sortChartId2);
+        }
     }
 
     /**
@@ -97,11 +112,36 @@ class Index extends React.Component {
 
         const chartBG = echarts.init(id);
 
+        
+        var seriesLabel = {
+            normal: {
+                show: true,
+                formatter: function (params,index) {
+                    let txt
+                    if (params.data > 10){
+                        txt =  params.data + "% (" + chartData.nums[params.dataIndex] + "件)" ;
+                    }
+                    else if (params.data < 5) {
+                        txt = "";
+                    }
+                    else{
+                        txt =  params.data + "%";
+                    }
+                    return txt;
+                },
+                fontSize: 14,
+                color:'#fff'
+            }
+        }
+        
         const option = {
             title: {
             },
             tooltip: {
                 trigger: 'axis',
+                formatter: function (params, index) {
+                    return `${params[0].value}% (${chartData.nums[params[0].dataIndex]}件)`
+                },
             },
             legend: {
             },
@@ -121,9 +161,9 @@ class Index extends React.Component {
                     type: 'value',
                     boundaryGap: [0, 0.01],
                     axisLabel: {
-                        show: true,
+                        show: false,
                         textStyle: {
-                            color: '#666'   // 字体颜色
+                            color: '#666'       // 字体颜色
                         }
                     },
                     axisLine: {
@@ -136,7 +176,7 @@ class Index extends React.Component {
             yAxis: [
                 {
                     type: 'category',
-                    data: chartData.label,
+                    data: chartData.labels,
                     axisLabel: {
                         show: true,
                         textStyle: {
@@ -161,7 +201,8 @@ class Index extends React.Component {
                             position: 'top'
                         },
                     },
-                    data: chartData.value,
+                    data: chartData.values,
+                    label: seriesLabel,
                 },
             ]
         }
@@ -182,6 +223,10 @@ class Index extends React.Component {
             },
             tooltip: {
                 trigger: 'axis',
+                formatter: function (params) {
+                    return "销售额：" + params[0].data
+                    //return params[0].axisValueLabel + "<br/>" + params[0].data +"%"
+                }
             },
             legend: {
             },
@@ -200,7 +245,7 @@ class Index extends React.Component {
                 {
                     type: 'category',
                     boundaryGap: false,
-                    data: chartData.label,
+                    data: chartData.labels,
                     axisLabel: {
                         show: true,
                         textStyle: {
@@ -244,7 +289,7 @@ class Index extends React.Component {
                         },
                     },
                     areaStyle: { normal: {} },
-                    data: chartData.value
+                    data: chartData.values
                 },
             ]
         }
@@ -267,13 +312,49 @@ class Index extends React.Component {
      * @param {*} date 
      * @param {*} dateString 
      */
-    onGetDateRange(date, dateString) {
-        // 获取日期并赋值到state
-        let startDate = dateString[0],
-            endDate = dateString[1];
+    onGetDateRange(date, dateString) { 
+        this.setState({'date':dateString});
+    }
 
-        // 赋值
-        this.setState({ startDate: startDate, endDate: endDate });
+    // 搜索
+    onSearch=()=>{
+        this.props.dispatch({
+            type:'sort/getHotProductsRateInCate',
+            payload:{
+                'date':this.state.date,
+                'site':this.state.site,
+                'cid':this.state.cid
+            }
+        })
+
+        this.props.dispatch({
+            type: 'sort/getCateChartInHotProducts',
+            payload: {
+                'date': this.state.date,
+                'site': this.state.site,
+                'cid': this.state.cid
+            }
+        })
+
+    }
+
+    /**
+     * 选择站点与分类
+     */
+    onSelectSiteAndCid(value) {
+        var len = value.length;
+        if (len == 1) {
+            this.state.site = value[0];
+            this.state.cid = null;
+        }
+        if (len > 1) {
+            this.state.site = value[0];
+            this.state.cid = value[len - 1];
+        }
+        if (len < 1) {
+            this.state.site = null;
+            this.state.cid = null;
+        }
     }
 }
 

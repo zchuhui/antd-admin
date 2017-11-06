@@ -9,90 +9,112 @@ import { connect } from 'dva';
 import styles from './index.less'
 import moment from 'moment';
 import echarts from 'echarts';
-import { Button, DatePicker, Spin, Cascader, Input } from 'antd';
+import { Button, DatePicker, Spin, Cascader, Input, } from 'antd';
 import DateTime from 'utils/time';
 
-const { RangePicker } = DatePicker,
-    InputGroup = Input.Group;
+const InputGroup = Input.Group;
+
 
 class Index extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
-            startDate: DateTime.getDateOfDays(7),
-            endDate: DateTime.getDateOfDays(1),
+            site: null,
+            cid: null,
+            date: DateTime.getDateOfDays(1)
         }
     }
-
+    
     render() {
         return (
             <div className={`${styles.content}`}>
                 <div>
                     <Cascader
+                        options={this.props.cate ? this.props.cate : null}
                         placeholder="竞品平台-分类"
                         changeOnSelect
                         allowClear
                         style={{ marginRight: 10, width: 300 }}
+                        onChange={this.onSelectSiteAndCid.bind(this)}
                     />
-                    <InputGroup compact style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
+                    <InputGroup compact style={{ width: 236, display: 'inline-block', verticalAlign: 'top' }}>
                         <Button style={{ verticalAlign: 'top' }}>检索时间</Button>
-                        <RangePicker
-                            value={[
-                                moment(this.state.startDate),
-                                moment(this.state.endDate)
-                            ]}
-                            ranges={{
-                                '今天': [moment(), moment()],
-                                '本周': [moment(), moment().endOf('week')],
-                                '本月': [moment(), moment().endOf('month')]
-                            }}
-                            format="YYYY-MM-DD"
-                            style={{ width: 210 }}
-                            allowClear={false}
+                        <DatePicker
+                            defaultValue={moment(this.state.date)}
                             disabledDate={this.disabledDate}
-                            onChange={this.onGetDateRange.bind(this)}
-                        />
+                            onChange={this.onGetDateRange.bind(this)} />
                     </InputGroup>
-                    <Input placeholder="步长" style={{width:120,marginRight:10,}}/>
-                    <Button type="primary">搜索</Button>
+                    <Input placeholder="步数" id='txtStep' style={{width:150,marginRight:10}}/>
+                    <Button type="primary" onClick={this.onSearch}>搜索</Button>
                 </div>
                 <div className={styles.chartWrap}>
-                    <h2>二级类目名称</h2>
-                    <div ref="sortChartId" style={{ width: '100%', height: 600 }}>
-
-                    </div>
-                    <div className={styles.chartName}>TOP100销售分类占比</div>
+                {
+                    this.props.loading ? <div className={styles.dataNull}><Spin /></div> :
+                        this.props.data ?
+                            <div>
+                                <h2>{this.props.data.cateName}</h2>
+                                <div ref="sortChartId" style={{ width: '100%', height: this.props.data.nums.length * 30 }}></div>
+                                <div className={styles.chartName}>TOP100热卖排序价格分布</div>
+                            </div>
+                            :
+                            <div className={styles.dataNull}>该类目的热销商品排行暂无数据</div>
+                }
                 </div>
-                <div></div>
             </div>
         )
     }
 
-
-    componentDidMount() {
-        let data = {
-            label: ['价格区间1', '价格区间2', '价格区间3', '价格区间4', '价格区间5', '价格区间6', '价格区间4', '价格区间5', '价格区间6'],
-            value: [22, 33, 1000, 222, 32, 333, 333, 222, 233, 23, , 333, 223],
-        };
-        this.loadChart(data, this.refs.sortChartId)
+    componentDidMount(){
+        this.props.dispatch({
+            type: 'price/getHotProductsRateForPrice',
+            payload: {
+                data: this.state.date,
+            }
+        })
     }
+
     componentDidUpdate() {
+        if (this.props.data !== null && this.refs.sortChartId) {
+            this.loadChartBar(this.props.data, this.refs.sortChartId);
+        }
     }
 
     /**
-     * 载入折线图表
+     * 载入柱形图表
      * @param {object} chartData 
      */
-    loadChart = (chartData, id) => {
-
+    loadChartBar = (chartData, id) => {
         const chartBG = echarts.init(id);
+
+        var seriesLabel = {
+            normal: {
+                show: true,
+                formatter: function (params, index) {
+                    let txt
+                    if (params.data > 10) {
+                        txt = params.data + "% (" + chartData.nums[params.dataIndex] + "件)";
+                    } else if (params.data < 5){
+                        txt = "";
+                    }
+                    else {
+                        txt = params.data + "%";
+                    }
+                    return txt;
+                },
+                fontSize: 14,
+                color: '#fff'
+            }
+        }
 
         const option = {
             title: {
             },
             tooltip: {
                 trigger: 'axis',
+                formatter: function (params, index) {
+                    return `${params[0].value}% (${chartData.nums[params[0].dataIndex]}件)`
+                },
             },
             legend: {
             },
@@ -112,7 +134,7 @@ class Index extends React.Component {
                     type: 'value',
                     boundaryGap: [0, 0.01],
                     axisLabel: {
-                        show: true,
+                        show: false,
                         textStyle: {
                             color: '#666'   // 字体颜色
                         }
@@ -127,7 +149,7 @@ class Index extends React.Component {
             yAxis: [
                 {
                     type: 'category',
-                    data: chartData.label,
+                    data: chartData.labels,
                     axisLabel: {
                         show: true,
                         textStyle: {
@@ -152,14 +174,14 @@ class Index extends React.Component {
                             position: 'top'
                         },
                     },
-                    data: chartData.value,
+                    data: chartData.values,
+                    label: seriesLabel,
                 },
             ]
         }
 
         chartBG.setOption(option);
     }
-
 
     /**
      * 限制日期控件只能选今天或今天前的日期
@@ -175,17 +197,48 @@ class Index extends React.Component {
      * @param {*} dateString 
      */
     onGetDateRange(date, dateString) {
-        // 获取日期并赋值到state
-        let startDate = dateString[0],
-            endDate = dateString[1];
+        this.setState({ 'date': dateString });
+    }
 
-        // 赋值
-        this.setState({ startDate: startDate, endDate: endDate });
+    /**
+     * 搜索
+     */
+    onSearch = () => {
+        const step = document.getElementById('txtStep').value;
+        this.props.dispatch({
+            type: 'price/getHotProductsRateForPrice',
+            payload: {
+                'date': this.state.date,
+                'site': this.state.site,
+                'cid': this.state.cid,
+                'step':step !==""?step:null,
+            }
+        })
+
+    }
+
+    /**
+     * 选择站点与分类
+     */
+    onSelectSiteAndCid(value) {
+        var len = value.length;
+        if (len == 1) {
+            this.state.site = value[0];
+            this.state.cid = null;
+        }
+        if (len > 1) {
+            this.state.site = value[0];
+            this.state.cid = value[len - 1];
+        }
+        if (len < 1) {
+            this.state.site = null;
+            this.state.cid = null;
+        }
     }
 }
 
 function mapStateToProps(state) {
-    return { ...state.sort };
+    return { ...state.price };
 }
 
 export default connect(mapStateToProps)(Index)

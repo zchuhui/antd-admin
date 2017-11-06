@@ -54,7 +54,6 @@ export async function addPurchaseProducts(params) {
 }
 
 
-
 /**
  * 获取竞品分类菜单
  */
@@ -76,5 +75,50 @@ export function getMenuBrand() {
           data: params,
 	});
 }
+
+
+/**
+ * 热销商品某二级分类下三级分类占比
+ */
+export function getHotProductsRateInCate(params) {
+    Object.assign(params,{ 'com': 'products', 't': 'getHotProductsRateInCate' });
+    return request(apibg, {
+        method: 'get',
+        data: params,
+    });
+}
+
+/**
+ * 热销商品分类趋势图
+ */
+export function getCateChartInHotProducts(params) {
+    Object.assign(params, { 'com': 'products', 't': 'getCateChartInHotProducts' });
+    return request(apibg, {
+        method: 'get',
+        data: params,
+    });
+}
+
+/**
+ * 热销商品某二级分类的价格区间占比
+ */
+export function getHotProductsRateForPrice(params) {
+    Object.assign(params, { 'com': 'products', 't': 'getHotProductsRateForPriceInCate' });
+    return request(apibg, {
+        method: 'get',
+        data: params,
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
