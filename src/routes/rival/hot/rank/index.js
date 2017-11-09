@@ -55,7 +55,6 @@ class Index extends React.Component {
                         <Input style={{ width: 24, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
                         <InputNumber min={0} max={10000} style={{ width: 90, textAlign: 'center', borderLeft: 0 }} placeholder="最大值" onChange={this.onChangePriceMax}/>
                     </InputGroup>
-                    <Input placeholder="SKU" id='txtSku' style={{ width: 150, marginRight: 10 }} />
                     <InputGroup compact style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
                         <Button style={{ verticalAlign: 'top', pointerEvents: 'none', backgroundColor: '#fff' }}>检索时间</Button>
                         <RangePicker
@@ -75,6 +74,7 @@ class Index extends React.Component {
                             onChange={this.onGetDateRange.bind(this)}
                         />
                     </InputGroup>
+                    <Input placeholder="url" id='txtUrl' style={{ width: 150, marginRight: 10 }} />
                     <InputNumber min={10} max={50} placeholder="热卖排序" id='txtHotSort' style={{ width: 150, marginRight: 10 }} />
                     <Button type="primary" onClick={this.onSearch}>搜索</Button>
                 </div>
@@ -176,10 +176,10 @@ class Index extends React.Component {
                 >
                     <div>
                         {
-                            /* this.props.data ?
+                            this.props.data ?
                             this.formatModelData(COLWIDTH)
-                            :null */
-                            this.props.data ? 
+                            :null
+                            /* this.props.data ? 
                             <div className={`${styles.dataTable} ${styles.modalDataTable}`}>
                                 <ul>
                                     <li className={styles.row}>
@@ -252,7 +252,7 @@ class Index extends React.Component {
                                     }
                                 </div>
                             </div>
-                            :null
+                            :null */
                         }
                     </div>
                 </Modal>
@@ -283,24 +283,27 @@ class Index extends React.Component {
     componentDidUpdate() {
     }
 
-
+    
     formatModelData = (COLWIDTH)=>{
 
         let topSet = this.props.data.topSet,
-                list = this.props.data.list;
-        
-        console.log(list.length);
-        list.map((item,index) => {
-            if(index == 5)
-                delete list[index];
-        })
-        console.log(list.length);
-        
+              list = this.props.data.list,
+        thisColour = this.state.colour;
+            
+        // 筛选出有数据的行
+        let markItem = [];
+        list.map((item,index)=>{
+            item.map((item2,index2)=>{
+                if (item2.colour == thisColour){
+                    markItem.push(index2);
+                    return true;
+                }
+            })
+        });
 
         return (
-            <div className={`${styles.dataTable} ${styles.modalDataTable}`}>
+            <div className={`${styles.dataTable}`}>
                 <ul>
-                    {/* 时间 */}
                     <li className={styles.row}>
                         <div
                             key='00'
@@ -331,6 +334,8 @@ class Index extends React.Component {
                     >
                         {
                             this.props.data.topSet.map((item, index) => (
+                                /* 只显示有标记的数据 */
+                                markItem.contains(index)?
                                 <div
                                     key={`item_rank${index}`}
                                     className={styles.col}
@@ -338,34 +343,38 @@ class Index extends React.Component {
                                 >
                                     {item}
                                 </div>
+                                :null
 
                             ))
                         }
                     </div>
                     {
                         /* 数据 */
-                        this.props.data.list.map((item, index) => (
+                        list.map((item, index) => (
                             <div className={styles.row2} key={`row_${index}`}
                                 style={{ width: COLWIDTH }}>
                                 {
-                                    this.props.data.topSet.map((item2, index2) => (
-                                        <div
-                                            key={`item2${index2}`}
-                                            className={styles.col}
-                                        >
-                                            {
-                                                item.length > 0 && item[index2] ?
-                                                    <span>
-                                                        {
-                                                            item[index2].colour !== 0 && item[index2].colour == this.state.colour ?
-                                                                <img src={item[index2].img_url} />
-                                                                : null
-                                                        }
-                                                    </span>
-                                                    : null
-                                            }
-
-                                        </div>
+                                    topSet.map((item2, index2) => (
+                                        /* 只显示有标记的数据 */
+                                        markItem.contains(index2)?
+                                            <div
+                                                key={`item2${index2}`}
+                                                className={styles.col}
+                                            >
+                                                {
+                                                    item.length > 0 && item[index2] ?
+                                                        <span>
+                                                            {
+                                                                item[index2].colour !== 0 && item[index2].colour == this.state.colour ?
+                                                                    <img src={item[index2].img_url} />
+                                                                    : null
+                                                            }
+                                                        </span>
+                                                        : null
+                                                }
+                                            </div>
+                                            :null
+                                        
                                     ))
                                 }
                             </div>
@@ -374,7 +383,6 @@ class Index extends React.Component {
                 </div>
             </div>
         )
-
     }
 
     /**
@@ -398,7 +406,7 @@ class Index extends React.Component {
         if(days > 15){
             endDate = moment(startDate).add(15, "days").format("YYYY-MM-DD");
             this.setState({ startDate: startDate, endDate: endDate });
-            
+
             message.warning("目前只支持15天内的搜索范围");
         }
         else{
@@ -464,7 +472,7 @@ class Index extends React.Component {
 
     onSearch=()=>{
 
-        const sku = document.getElementById("txtSku").value,
+        const url = document.getElementById("txtUrl").value,
             rank = document.getElementById("txtHotSort").value,
             priceMin = this.state.priceMin,
             priceMax = this.state.priceMax;
@@ -478,8 +486,8 @@ class Index extends React.Component {
         }
 
 
-        if (sku !== "")
-            params.sku = sku;
+        if (url !== "")
+            params.url = url;
         if (rank !== "")
             params.rank = rank;
         if (priceMin !== null && priceMax !== null && priceMax>priceMin){
@@ -524,3 +532,17 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Index)
+
+
+/**
+ * 数组操作：判断元素是否在素组里面
+ */
+Array.prototype.contains = function (val) {
+    var len = this.length;
+    while (len--) {
+        if (this[len] === val) {
+            return true;
+        }
+    }
+    return false;
+}
