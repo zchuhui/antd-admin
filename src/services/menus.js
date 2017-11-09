@@ -33,8 +33,9 @@ export async function menuData (params) {
 
     {"id":"1","name":"竞品新品","icon":"compass","route":"/rival/new"},
     {"id":"101","mpid":"-1","bpid":"1","name":"竞品列表","route":"/rival/view"},
-    {"id":"2","name":"竞品热销","icon":"heart-o","route":"/rival/hot"},
-    { "id": "21", "bpid": "2", "mpid": "2", "name": "品类分布", "route": "/rival/hot" },
+
+    { "id": "2", "name":"竞品热销","icon":"heart-o",}, 
+    /* { "id": "21", "bpid": "2", "mpid": "2", "name": "品类分布", "route": "/rival/hot/sort" }, */
     { "id": "22", "bpid": "2", "mpid": "2", "name": "价格分布", "route": "/rival/hot/price" },
     { "id": "23", "bpid": "2", "mpid": "2", "name": "热销排行", "route": "/rival/hot/rank" },
 
@@ -55,6 +56,7 @@ export async function menuData (params) {
     {"id":"44","bpid":"4","mpid":"4","name":"Search","icon":"search","route":"/UIElement/search"},
     {"id":"45","bpid":"4","mpid":"4","name":"Editor","icon":"edit","route":"/UIElement/editor"},
     {"id":"46","bpid":"4","mpid":"4","name":"layer (Function)","icon":"credit-card","route":"/UIElement/layer"},
+
     {"id":"5","bpid":"1","name":"Recharts","icon":"code-o"},
     {"id":"51","bpid":"5","mpid":"5","name":"LineChart","icon":"line-chart","route":"/chart/lineChart"},
     {"id":"52","bpid":"5","mpid":"5","name":"BarChart","icon":"bar-chart","route":"/chart/barChart"},

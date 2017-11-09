@@ -109,7 +109,7 @@ const Routers = function ({ history, app }) {
       component: () => import('./routes/rival/new/view'),
     },
     {
-      path: '/rival/hot',
+      path: '/rival/hot/sort',
       models: () => [import('./models/rival/hot/sort')],
       component: () => import('./routes/rival/hot/sort/'),
     },

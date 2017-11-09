@@ -19,10 +19,6 @@ export default modelExtend(model, {
         }
     },
 
-    reducers: {
-        
-    },
-
     effects: {
         // 获取类目
         *getCateList({ payload }, { call, put }) {
@@ -43,15 +39,6 @@ export default modelExtend(model, {
 
             const { data, code, msg } = yield call(getHotProductsRateForPrice, payload);
             if (code == CODE200) {
-                data.labels = data.priceRange;
-                data.nums = data.num;
-                let rate = [];
-                data.rate.map((item)=>{
-                    rate.push(item.split('%')[0])
-                })
-
-                data.values = rate;
-                
                 yield put({
                     type: 'updateState',
                     payload: { 'data': data }

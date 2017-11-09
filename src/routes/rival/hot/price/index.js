@@ -8,8 +8,9 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './index.less'
 import moment from 'moment';
+import { Link } from 'dva/router';
 import echarts from 'echarts';
-import { Button, DatePicker, Spin, Cascader, Input, } from 'antd';
+import { Button, DatePicker, Spin, Cascader, Input, InputNumber, Tooltip } from 'antd';
 import DateTime from 'utils/time';
 
 const InputGroup = Input.Group;
@@ -20,19 +21,24 @@ class Index extends React.Component {
         super(props, context);
 
         this.state = {
-            site: null,
+            site: 'gearbest', 
             cid: null,
+            level: null,
+            rank: 10,
             date: DateTime.getDateOfDays(1)
         }
     }
     
     render() {
+        const PATHNAME = '/rival/hot/rank';
+
         return (
             <div className={`${styles.content}`}>
                 <div>
                     <Cascader
                         options={this.props.cate ? this.props.cate : null}
                         placeholder="竞品平台-分类"
+                        defaultValue={["gearbest", "54285", "54376"]}
                         changeOnSelect
                         allowClear
                         style={{ marginRight: 10, width: 300 }}
@@ -45,22 +51,54 @@ class Index extends React.Component {
                             disabledDate={this.disabledDate}
                             onChange={this.onGetDateRange.bind(this)} />
                     </InputGroup>
-                    <Input placeholder="步数" id='txtStep' style={{width:150,marginRight:10}}/>
+                    <InputNumber placeholder="步数" id='txtStep' style={{width:150,marginRight:10}}/>
                     <Button type="primary" onClick={this.onSearch}>搜索</Button>
                 </div>
                 <div className={styles.chartWrap}>
-                {
-                    this.props.loading ? <div className={styles.dataNull}><Spin /></div> :
-                        this.props.data ?
-                            <div>
-                                <h2>{this.props.data.cateName}</h2>
-                                <div ref="sortChartId" style={{ width: '100%', height: this.props.data.nums.length * 30 }}></div>
-                                <div className={styles.chartName}>TOP100热卖排序价格分布</div>
-                            </div>
-                            :
-                            <div className={styles.dataNull}>该类目的热销商品排行暂无数据</div>
-                }
+                    {
+                        this.props.loading ? <div className={styles.dataNull}><Spin /></div> :
+                            this.props.data ?
+                                <div>
+                                    <h2>{this.props.data.cateName}</h2>
+                                    <div>
+                                        <ul className={styles.listBar}>
+                                            {
+                                                this.props.data.rate.map((item, index) => (
+                                                    <li key={index}>
+                                                        <div className={styles.listLabel}>{this.props.data.priceRange[index]}</div>
+                                                        <div className={styles.listValue}>
+                                                            <Link to={{
+                                                                pathname: PATHNAME,
+                                                                state: {
+                                                                    site: this.state.site,
+                                                                    cid: this.state.cid ? this.state.cid : item.cate3,
+                                                                    level: this.state.level ? this.state.level : 3,
+                                                                    rank: this.state.rank,
+                                                                }
+                                                            }}>
+                                                            {
+                                                                item.split('%')[0] > 5 ?
+                                                                    <div className={styles.value} style={{ width: item }}>{item} (件)</div>
+                                                                    :
+                                                                    <Tooltip title={`${item}(${ this.props.data.num[index] }件)`}>
+                                                                        <div className={styles.value} style={{ width: item }}></div>
+                                                                    </Tooltip>
+
+                                                            }
+                                                            </Link>
+                                                        </div>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                :
+                                <div className={styles.dataNull}>该类目的热销商品排行暂无数据</div>
+                    }
                 </div>
+
+                <div className={styles.chartName}>TOP100销售排序分类占比</div>
             </div>
         )
     }
@@ -75,112 +113,6 @@ class Index extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.data !== null && this.refs.sortChartId) {
-            this.loadChartBar(this.props.data, this.refs.sortChartId);
-        }
-    }
-
-    /**
-     * 载入柱形图表
-     * @param {object} chartData 
-     */
-    loadChartBar = (chartData, id) => {
-        const chartBG = echarts.init(id);
-
-        var seriesLabel = {
-            normal: {
-                show: true,
-                formatter: function (params, index) {
-                    let txt
-                    if (params.data > 10) {
-                        txt = params.data + "% (" + chartData.nums[params.dataIndex] + "件)";
-                    } else if (params.data < 5){
-                        txt = "";
-                    }
-                    else {
-                        txt = params.data + "%";
-                    }
-                    return txt;
-                },
-                fontSize: 14,
-                color: '#fff'
-            }
-        }
-
-        const option = {
-            title: {
-            },
-            tooltip: {
-                trigger: 'axis',
-                formatter: function (params, index) {
-                    return `${params[0].value}% (${chartData.nums[params[0].dataIndex]}件)`
-                },
-            },
-            legend: {
-            },
-            toolbox: {
-                feature: {
-                }
-            },
-            grid: {
-                top: '3%',
-                left: '3%',
-                right: '6%',
-                bottom: '3%',
-                containLabel: true,
-            },
-            xAxis: [
-                {
-                    type: 'value',
-                    boundaryGap: [0, 0.01],
-                    axisLabel: {
-                        show: false,
-                        textStyle: {
-                            color: '#666'   // 字体颜色
-                        }
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: '#acdaff'    // x轴颜色
-                        }
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'category',
-                    data: chartData.labels,
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#666'       // 字体颜色
-                        }
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: '#acdaff'    // y轴颜色
-                        }
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: ``,
-                    type: 'bar',
-                    itemStyle: {
-                        normal: {
-                            color: '#acdaff',
-                            show: true,
-                            position: 'top'
-                        },
-                    },
-                    data: chartData.values,
-                    label: seriesLabel,
-                },
-            ]
-        }
-
-        chartBG.setOption(option);
     }
 
     /**
@@ -221,6 +153,7 @@ class Index extends React.Component {
      * 选择站点与分类
      */
     onSelectSiteAndCid(value) {
+        console.log(value);
         var len = value.length;
         if (len == 1) {
             this.state.site = value[0];

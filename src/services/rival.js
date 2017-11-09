@@ -110,6 +110,17 @@ export function getHotProductsRateForPrice(params) {
     });
 }
 
+/**
+ * 热销商品某二级分类的价格区间占比
+ */
+export function getHotProductSequence(params) {
+    Object.assign(params, { 'com': 'products', 't': 'getHotProductSequence' });
+    return request(apibg, {
+        method: 'post',
+        data: params,
+    });
+}
+
 
 
 

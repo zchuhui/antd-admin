@@ -28,17 +28,6 @@ export default modelExtend(model, {
 
             const { data, code, msg } = yield call(getHotProductsRateInCate, payload);
             if (code == CODE200){
-                let label = [],value = [],num = [];
-                data.child.map((item,index)=>{
-                    label.push(item.cname);
-                    value.push(item.rate.split('%')[0]);
-                    num.push(item.num);
-                });
-
-                data.labels = label;
-                data.values = value;
-                data.nums = num;
-
                 yield put({
                     type: 'updateState',
                     payload: { 'data': data }

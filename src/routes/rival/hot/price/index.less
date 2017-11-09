@@ -10,6 +10,45 @@
     min-height: 800px;
     background: #fff;
     padding:20px 30px;
+
+    .listBar{
+        margin-top:30px;
+
+        li{
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 20px;
+
+            .listLabel,.listValue{
+                display: inline-block;
+            }
+            .listLabel{
+                width:5%;
+                height:30px;
+                vertical-align: top;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                text-align: center;
+            }
+            .listValue{
+                width:95%;
+                height:30px;
+                text-align: left;
+
+                .value{
+                    display: inline-block;
+                    height:30px;
+                    background: #acdaff;
+                    color:#fff;
+                    text-indent: 10px;
+                    border-left:1px solid #acdaff;
+                    overflow: hidden;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
 }
 
 .chartWrap{
@@ -27,7 +66,8 @@
 }
 
 .dataNull{
-    margin:100px auto;
+    height: 400px;
+    padding: 200px 0;
     text-align: center;
     color: #999;
 }
