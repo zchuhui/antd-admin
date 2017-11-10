@@ -268,7 +268,7 @@ class NewView extends React.Component {
     componentDidMount(){
         // 获取品牌菜单
         this.props.dispatch({ type: 'rival/getBrandList'}); 
-        this.props.dispatch({ type: 'rival/getCateList'});
+        this.props.dispatch({ type: 'rival/getCateList',payload:{level:0}});
 
         const params = this.props.location.state;
 

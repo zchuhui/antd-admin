@@ -59,7 +59,10 @@ class Index extends React.Component {
                         this.props.loading ? <div className={styles.dataNull}><Spin /></div> :
                             this.props.data ?
                                 <div>
-                                    <h2>{this.props.data.cateName}</h2>
+                                    <h2>
+                                        {this.props.data.cateName} &nbsp; 
+                                        ({this.props.data.priceRange[0].split('-')[0]}~{this.props.data.priceRange[this.props.data.priceRange.length-1].split('-')[1]})
+                                    </h2>
                                     <div>
                                         <ul className={styles.listBar}>
                                             {
@@ -78,12 +81,11 @@ class Index extends React.Component {
                                                             }}>
                                                             {
                                                                 item.split('%')[0] > 5 ?
-                                                                    <div className={styles.value} style={{ width: item }}>{item} (件)</div>
+                                                                    <div className={styles.value} style={{ width: item }}>{item} ({this.props.data.num[index]}件)</div>
                                                                     :
                                                                     <Tooltip title={`${item}(${ this.props.data.num[index] }件)`}>
                                                                         <div className={styles.value} style={{ width: item }}></div>
                                                                     </Tooltip>
-
                                                             }
                                                             </Link>
                                                         </div>
@@ -98,7 +100,7 @@ class Index extends React.Component {
                     }
                 </div>
 
-                <div className={styles.chartName}>TOP100销售排序分类占比</div>
+                <div className={styles.chartName}>TOP100热卖排序价格分布</div>
             </div>
         )
     }
@@ -153,7 +155,6 @@ class Index extends React.Component {
      * 选择站点与分类
      */
     onSelectSiteAndCid(value) {
-        console.log(value);
         var len = value.length;
         if (len == 1) {
             this.state.site = value[0];

@@ -41,6 +41,7 @@ class Index extends React.Component {
             <div className={`${styles.content}`}>
                 <div>
                     <Cascader
+                        className={styles.mb10}
                         options={this.props.cate ? this.props.cate : null}
                         defaultValue={this.props.location.state ? [this.props.location.state.site, this.props.location.state.cid] : ["gearbest", "54285", "54376"]}
                         placeholder="竞品平台-分类"
@@ -49,13 +50,13 @@ class Index extends React.Component {
                         style={{ marginRight: 10, width: 300 }}
                         onChange={this.onSelectSiteAndCid.bind(this)}
                     />
-                    <InputGroup compact style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
+                    <InputGroup compact className={styles.mb10} style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
                         <Button style={{ verticalAlign: 'top',pointerEvents: 'none', backgroundColor: '#fff'}} >价格分区</Button>
-                        <InputNumber min={0} max={10000} style={{ width: 90, textAlign: 'center' }} placeholder="最小值" onChange={this.onChangePriceMin}/>
+                        <InputNumber min={0} value={this.state.priceMin} style={{ width: 90, }} placeholder="最小值" onChange={this.onChangePriceMin} onBlur={this.onBlur} />
                         <Input style={{ width: 24, borderLeft: 0, pointerEvents: 'none', backgroundColor: '#fff' }} placeholder="~" disabled />
-                        <InputNumber min={0} max={10000} style={{ width: 90, textAlign: 'center', borderLeft: 0 }} placeholder="最大值" onChange={this.onChangePriceMax}/>
+                        <InputNumber min={0} value={this.state.priceMax} style={{ width: 90, borderLeft: 0 }} placeholder="最大值" onChange={this.onChangePriceMax} onBlur={this.onBlur} />
                     </InputGroup>
-                    <InputGroup compact style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
+                    <InputGroup compact className={styles.mb10} style={{ width: 300, display: 'inline-block', verticalAlign: 'top' }}>
                         <Button style={{ verticalAlign: 'top', pointerEvents: 'none', backgroundColor: '#fff' }}>检索时间</Button>
                         <RangePicker
                             value={[
@@ -74,9 +75,9 @@ class Index extends React.Component {
                             onChange={this.onGetDateRange.bind(this)}
                         />
                     </InputGroup>
-                    <Input placeholder="url" id='txtUrl' style={{ width: 150, marginRight: 10 }} />
-                    <InputNumber min={10} max={50} placeholder="热卖排序" id='txtHotSort' style={{ width: 150, marginRight: 10 }} />
-                    <Button type="primary" onClick={this.onSearch}>搜索</Button>
+                    <Input placeholder="url" className={styles.mb10}  id='txtUrl' style={{ width: 150, marginRight: 10 }} />
+                    <InputNumber min={10} max={50} className={styles.mb10} placeholder="热卖排序" id='txtHotSort' style={{ width: 150, marginRight: 10 }} />
+                    <Button type="primary" onClick={this.onSearch} className={styles.mb10}>搜索</Button>
                 </div>
                 <div>
                     {
@@ -404,10 +405,10 @@ class Index extends React.Component {
         const days = this.getDateDiff(startDate,endDate,"day") +1;
         // 限制为十五天
         if(days > 15){
-            endDate = moment(startDate).add(15, "days").format("YYYY-MM-DD");
+            endDate = moment(startDate).add(14, "days").format("YYYY-MM-DD");
             this.setState({ startDate: startDate, endDate: endDate });
 
-            message.warning("目前只支持15天内的搜索范围");
+            message.warning("超出搜索界限，请搜索15天之内数据O(∩_∩)O");
         }
         else{
             this.setState({ startDate: startDate, endDate: endDate });
@@ -502,11 +503,28 @@ class Index extends React.Component {
     }
 
     onChangePriceMin = (val) => {
-        this.state.priceMin = val;
+        this.setState({
+            priceMin:val
+        })
     }
 
     onChangePriceMax = (val) => {
-        this.state.priceMax = val;
+        this.setState({
+            priceMax: val
+        });
+    }
+
+    onBlur=()=>{
+        const min = this.state.priceMin,
+            max = this.state.priceMax;
+
+        if(min && max && min > max){
+            this.setState({
+                priceMin:null,
+                priceMax:null,
+            })
+            message.warning("最大值不能小于最小值");
+        }
     }
 
     onHide = () => {

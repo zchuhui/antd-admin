@@ -57,8 +57,8 @@ export async function addPurchaseProducts(params) {
 /**
  * 获取竞品分类菜单
  */
-export function getMenuCate() { 
-	const params = {'com':'ajax','t':'getCateList'};
+export function getMenuCate(params) { 
+	Object.assign(params,{'com':'ajax','t':'getCateList'});
     return request(apibg, {
           method: 'get',
           data: params,

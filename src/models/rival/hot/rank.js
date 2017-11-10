@@ -15,7 +15,7 @@ export default modelExtend(model, {
 
     subscriptions: {
         setup({ dispatch }) {
-            dispatch({ type: 'getCateList' });
+            dispatch({ type: 'getCateList', payload: { level: 2 }});
         }
     },
 
