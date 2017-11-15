@@ -7,7 +7,7 @@ import Storage from './storage';
 
 // message 全局配置
 message.config({
-  top: "45%",
+  top: "5%",
   duration: 2,
 }) 
 

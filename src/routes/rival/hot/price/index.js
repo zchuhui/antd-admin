@@ -60,9 +60,7 @@ class Index extends React.Component {
                             this.props.data ?
                                 <div>
                                     <h2>
-                                        {this.props.data.cateName} &nbsp; 
-                                        ({this.props.data.priceRange[0].split('-')[0]}~{this.props.data.priceRange[this.props.data.priceRange.length-1].split('-')[1]})
-                                    </h2>
+                                        {this.props.data.cateName} &nbsp; ( {this.props.data.range.min}-{this.props.data.range.max} ) </h2>
                                     <div>
                                         <ul className={styles.listBar}>
                                             {

@@ -52,7 +52,7 @@ class Opinion extends React.Component {
             onBlur={this.inputBlur}
           />
         </div>
-        <p>你也可以加我们的Q群, 直接跟我们说。 群号：681211866（情报源服务群）</p>
+        <p>你也可以加我们的Q群, 直接跟我们说。 群号：<a href="https://jq.qq.com/?_wv=1027&k=5iHOXv5" target="_blank">681211866</a></p>
       </Modal>
     );
   }

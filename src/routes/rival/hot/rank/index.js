@@ -76,7 +76,7 @@ class Index extends React.Component {
                         />
                     </InputGroup>
                     <Input placeholder="url" className={styles.mb10}  id='txtUrl' style={{ width: 150, marginRight: 10 }} />
-                    <InputNumber min={10} max={50} className={styles.mb10} placeholder="热卖排序" id='txtHotSort' style={{ width: 150, marginRight: 10 }} />
+                    <InputNumber min={5} max={100} className={styles.mb10} placeholder="热卖排序" id='txtHotSort' style={{ width: 150, marginRight: 10 }} />
                     <Button type="primary" onClick={this.onSearch} className={styles.mb10}>搜索</Button>
                 </div>
                 <div>
@@ -143,8 +143,7 @@ class Index extends React.Component {
                                                                     {
                                                                        item[index2].colour!==0?
                                                                         <div 
-                                                                            className={styles.dot} 
-                                                                            style={{background:item[index2].colourValue}}
+                                                                            className={styles.dot}  
                                                                             onClick={this.onShowKin.bind(this, item[index2].colour)}
                                                                         ></div>
                                                                         :
@@ -523,6 +522,7 @@ class Index extends React.Component {
                 priceMin:null,
                 priceMax:null,
             })
+            
             message.warning("最大值不能小于最小值");
         }
     }
